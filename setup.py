@@ -1,7 +1,7 @@
 import os
 from setuptools import setup
 
-version = '0.0.1dev'
+version = '0.1a'
 long_description = '\n\n'.join([
     open('README.rst').read(),
     open('CHANGES.txt').read(),
@@ -18,7 +18,7 @@ setup(
     license = "Simplified BSD",
     keywords = ['compare', 'matcher', 'to be', 'to equal', 'assert', 'test equality', 'specification', 'BDD', 'TDD'],
     classifiers = [
-        'Development Status :: 1 - Planning',
+        'Development Status :: 3 - Alpha',
         'Environment :: Console',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
