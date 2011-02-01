@@ -50,7 +50,8 @@ class UnmetExpectation(AssertionError):
     This error class inherits AssertionError so it is compatible with
     unittest assertion errors and plain old python "assert" errors.
     """
-
+    pass
+    
 # provide a usable alias for the Expr class
 expect = Expr
 """Alias for the Expect class that starts an expectation contruct."""
