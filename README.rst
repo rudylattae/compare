@@ -56,7 +56,7 @@ test-focused non-pythonic distrations like "self.assertEqual(s)...",
 "self.assertTrue", etc.
 
 Here is a trivial example of the clarity you gain when you 
-employ the "expect" construct in your specs::
+employ the "expect" construct in your specs.
 
 > cat hello.py::
 
