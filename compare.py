@@ -92,3 +92,47 @@ def matcher(func):
     """
     setattr(expect, func.__name__, func)
 
+
+# Matchers
+# ========
+
+@matcher
+def to_equal(self, expected):
+    """Compares values based on simple equality "=="
+    
+    Passes if the values are equal::
+    
+        >>> expect(555).to_equal(555)
+    
+    Fails if the values are not equal::
+    
+        >>> expect('waiting...').to_equal('done!')
+        Traceback (most recent call last):
+            ...
+        AssertionError: Expected 'waiting...' to equal 'done!'
+    """
+    message = "Expected %r to equal %r" % (self.value, expected)
+    if (self.value == expected) != True:
+        raise AssertionError(message)
+
+
+@matcher
+def to_be(self, expected):
+    """Compares values based on identity ("is")
+    
+    Passes if the values are identical
+    
+    >>> a1 = a2 = ['foo', 'bar']
+    >>> expect(a1).to_be(a2)
+    
+    Fails if the values are not identical
+    
+    >>> b1 = ['foo', 'bar']
+    >>> expect(a1).to_be(b1)
+    Traceback (most recent call last):
+        ...
+    AssertionError: Expected ['foo', 'bar'] to be ['foo', 'bar']
+    """
+    message = "Expected %r to be %r" % (self.value, expected)
+    if (self.value is expected) != True:
+        raise AssertionError(message)
