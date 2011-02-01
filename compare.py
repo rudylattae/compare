@@ -97,18 +97,18 @@ def matcher(func):
     """
     setattr(expect, func.__name__, func)
 
-def verify(expr, outcome, message=""):
+def ensure(expr, outcome, message=""):
     """Compares the result of the given boolean expression to the anticipated
     boolean outcome. If there is a match, all is well. If the comparison fails,
     it raises an UnmetExpectation error with the given message
     
     Stays quite if the comparison lines up::
     
-        >>> verify(5 == 5, True)
+        >>> ensure(5 == 5, True)
     
     Raises an error if the comparison fails::
     
-        >>> verify('Foo' == 'foo', True)
+        >>> ensure('Foo' == 'foo', True)
         Traceback (most recent call last):
             ...
         UnmetExpectation
@@ -118,7 +118,7 @@ def verify(expr, outcome, message=""):
         >>> actual = 'Foo'
         >>> expected = 'foo'
         >>> message = "'%s' does not equal '%s'" % (actual, expected)
-        >>> verify(actual == expected, True, message)
+        >>> ensure(actual == expected, True, message)
         Traceback (most recent call last):
             ...
         UnmetExpectation: 'Foo' does not equal 'foo'
@@ -146,7 +146,7 @@ def to_equal(self, expected):
         UnmetExpectation: Expected 'waiting...' to equal 'done!'
     """
     message = "Expected %r to equal %r" % (self.actual, expected)
-    verify(self.actual == expected, True, message)
+    ensure(self.actual == expected, True, message)
 
 @matcher
 def to_be(self, expected):
@@ -166,7 +166,7 @@ def to_be(self, expected):
         UnmetExpectation: Expected ['foo', 'bar'] to be ['foo', 'bar']
     """
     message = "Expected %r to be %r" % (self.actual, expected)
-    verify(self.actual is expected, True, message)
+    ensure(self.actual is expected, True, message)
     
 @matcher
 def to_return(self, expected):
@@ -189,4 +189,4 @@ def to_return(self, expected):
     """
     actual = self.actual()
     message = "Expected callable to return '%s' but got '%s'" % (expected, actual)
-    verify(actual == expected, True, message)
+    ensure(actual == expected, True, message)
