@@ -58,15 +58,17 @@ test-focused non-pythonic distrations like "self.assertEqual(s)...",
 Here is a trivial example of the clarity you gain when you 
 employ the "expect" construct in your specs::
 
-    > cat hello.py
+> cat hello.py::
+
     greeting = 'Hello you'
-    
-    > cat hello_specs.py
+
+> cat hello_specs.py::
+
     from compare import expect
     import hello
-        
-    expect(hello.greeting).to_equal('Hello you')
     
+    expect(hello.greeting).to_equal('Hello you')
+
 If you define an expectation that is not met, you will get an error like so::
 
     >>> from compare import expect
