@@ -63,5 +63,27 @@ def matcher(func):
     Now you may use the matcher with the expect syntax:
     
     >>> expect("foo").to_equal_foo()
+    
+    Typically, a matcher would also accept a second parameter "expected", 
+    which is the python expression, primitive or callable that the initial 
+    value would be compared to.
+    
+    Another trivial matcher example, this time it takes a value to compare with
+    and it spits out a helpful message if the comparison fails.
+    
+    >>> def to_equal(self, expected):
+    ...     assert self.value == expected, "Expected '%s' to equal '%s'" % (self.value, expected)
+    >>> matcher(to_equal)
+    
+    You may now use the matcher in an expectation:
+    
+    >>> expect("foo").to_equal("foo")
+    
+    When the matcher fails, it tells you what went wrong:
+    
+    >>> expect("foo").to_equal("BAR")
+    Traceback (most recent call last):
+        ...
+    AssertionError: Expected 'foo' to equal 'BAR'
     """
     setattr(expect, func.__name__, func)
