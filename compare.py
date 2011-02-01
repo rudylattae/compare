@@ -148,7 +148,6 @@ def to_equal(self, expected):
     message = "Expected %r to equal %r" % (self.actual, expected)
     verify(self.actual == expected, True, message)
 
-
 @matcher
 def to_be(self, expected):
     """Compares values based on identity ("is")
@@ -168,3 +167,26 @@ def to_be(self, expected):
     """
     message = "Expected %r to be %r" % (self.actual, expected)
     verify(self.actual is expected, True, message)
+    
+@matcher
+def to_return(self, expected):
+    """Compares the return value of a callable to the expected value
+    
+    Passes if the callable returns the expected value::
+    
+        >>> def foo():
+        ...     return "Foo"
+        >>> expect(foo).to_return('Foo')
+    
+    Fails if the callable does not return the expected value::
+    
+        >>> def bar():
+        ...     return "Barf"
+        >>> expect(bar).to_return('Bar')
+        Traceback (most recent call last):
+            ...
+        UnmetExpectation: Expected callable to return 'Bar' but got 'Barf'
+    """
+    actual = self.actual()
+    message = "Expected callable to return '%s' but got '%s'" % (expected, actual)
+    verify(actual == expected, True, message)
