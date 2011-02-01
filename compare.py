@@ -8,7 +8,7 @@ you have about two values.
 The expect starter is simply an alias to the Expr class so
 you may use it like so::
 
-    >>> expect(5 + 10).value == 15
+    >>> expect(5 + 10).actual == 15
     True
 """
 
@@ -28,21 +28,21 @@ class Expr(object):
     It initializes with primitives, native types and expressions::
     
         >>> e = Expr("Foo")
-        >>> e.value == "Foo"
+        >>> e.actual == "Foo"
         True
         
         >>> e = Expr(['a', 'b'])
-        >>> e.value == ['a', 'b']
+        >>> e.actual == ['a', 'b']
         True
     
-        >>> Expr(4 + 7).value == 11
+        >>> Expr(4 + 7).actual == 11
         True
     
-        >>> Expr(4 == 7).value == False
+        >>> Expr(4 == 7).actual == False
         True
     """
-    def __init__(self, value):
-        self.value = value
+    def __init__(self, expr):
+        self.actual = expr
 
 class UnmetExpectation(AssertionError):
     """Error that is raised if an expectation is not met.
@@ -66,7 +66,7 @@ def matcher(func):
     Here is a trivial example showing how to create and register a matcher::
     
         >>> def to_equal_foo(self):
-        ...     assert self.value == "foo"
+        ...     assert self.actual == "foo"
         >>> matcher(to_equal_foo)
     
     Now you may use the matcher with the expect syntax::
@@ -74,14 +74,14 @@ def matcher(func):
         >>> expect("foo").to_equal_foo()
     
     Typically, a matcher would also accept a second parameter "expected", 
-    which is the python expression, primitive or callable that the initial 
+    which is the python expression, primitive or callable that the actual 
     value would be compared to.
     
-    Another trivial matcher example, this time it takes a value to compare with
+    Another trivial matcher example. This time it takes a value to compare with
     and it spits out a helpful message if the comparison fails::
     
         >>> def to_equal(self, expected):
-        ...     assert self.value == expected, "Expected '%s' to equal '%s'" % (self.value, expected)
+        ...     assert self.actual == expected, "Expected '%s' to equal '%s'" % (self.actual, expected)
         >>> matcher(to_equal)
         
     You may now use the matcher in an expectation::
@@ -145,8 +145,8 @@ def to_equal(self, expected):
             ...
         UnmetExpectation: Expected 'waiting...' to equal 'done!'
     """
-    message = "Expected %r to equal %r" % (self.value, expected)
-    verify(self.value == expected, True, message)
+    message = "Expected %r to equal %r" % (self.actual, expected)
+    verify(self.actual == expected, True, message)
 
 
 @matcher
@@ -166,5 +166,5 @@ def to_be(self, expected):
         ...
     UnmetExpectation: Expected ['foo', 'bar'] to be ['foo', 'bar']
     """
-    message = "Expected %r to be %r" % (self.value, expected)
-    verify(self.value is expected, True, message)
+    message = "Expected %r to be %r" % (self.actual, expected)
+    verify(self.actual is expected, True, message)
