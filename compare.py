@@ -169,6 +169,38 @@ def to_be(self, expected):
     ensure(self.actual is expected, True, message)
     
 @matcher
+def to_contain(self, expected):
+    """Checks if the actual value contains the expected value.
+    
+    It applies to lists, strings, dict keys
+    
+    Passes if the expected value is in the actual value::
+    
+        >>> fruits = ['apple', 'orange', 'pear']
+        >>> expect(fruits).to_contain('apple')
+    
+    Fails if the expected value cannot be found in the actual value::
+    
+        >>> mammals = ['dog', 'whale', 'cat']
+        >>> expect(mammals).to_contain('fly')
+        Traceback (most recent call last):
+            ...
+        UnmetExpectation: Expected ['dog', 'whale', 'cat'] to contain 'fly'
+    
+    Works for stings::
+
+        >>> foo = "There is a BAR in here"
+        >>> expect(foo).to_contain('BAR')
+    
+    And dict keys::
+    
+        >>> pos = {'x': 40, 'y': 500}
+        >>> expect(pos).to_contain('x')
+    """
+    message = "Expected %r to contain %r" % (self.actual, expected)
+    ensure(expected in self.actual, True, message)
+    
+@matcher
 def to_return(self, expected):
     """Compares the return value of a callable to the expected value
     
@@ -188,5 +220,5 @@ def to_return(self, expected):
         UnmetExpectation: Expected callable to return 'Bar' but got 'Barf'
     """
     actual = self.actual()
-    message = "Expected callable to return '%s' but got '%s'" % (expected, actual)
+    message = "Expected callable to return %r but got %r" % (expected, actual)
     ensure(actual == expected, True, message)
