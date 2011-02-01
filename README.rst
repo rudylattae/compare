@@ -66,6 +66,15 @@ employ the "expect" construct in your specs::
     import hello
         
     expect(hello.greeting).to_equal('Hello you')
+    
+If you define an expectation that is not met, you will get an error like so::
+
+    >>> from compare import expect
+    >>> opts = ['foo', 'bar', 'baz']
+    >>> expect(opts).to_contain('BAT')
+    Traceback (most recent call last):
+        ...
+    UnmetExpectation: Expected ['foo', 'bar', 'baz'] to contain 'BAT'
 
 
 Feedback
@@ -77,6 +86,6 @@ improve compare. Let me know what you think about compare. I am on twitter
 criticsms or high fives :)
 
 Do you have suggestions for improvement? Then please create an 
-`issue <https://bitbucket.org/rudylattae/specit/issues>`_ with details 
+`issue <https://github.com/rudylattae/compare/issues>`_ with details 
 of what you would like to see. I'll take a look at it and work with you to either kill 
 the idea or implement it.
