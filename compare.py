@@ -97,6 +97,35 @@ def matcher(func):
     """
     setattr(expect, func.__name__, func)
 
+def verify(expr, outcome, message=""):
+    """Compares the result of the given boolean expression to the anticipated
+    boolean outcome. If there is a match, all is well. If the comparison fails,
+    it raises an UnmetExpectation error with the given message
+    
+    Stays quite if the comparison lines up::
+    
+        >>> verify(5 == 5, True)
+    
+    Raises an error if the comparison fails::
+    
+        >>> verify('Foo' == 'foo', True)
+        Traceback (most recent call last):
+            ...
+        UnmetExpectation
+    
+    Raises an error with the given message if the comparison fails::
+    
+        >>> actual = 'Foo'
+        >>> expected = 'foo'
+        >>> message = "'%s' does not equal '%s'" % (actual, expected)
+        >>> verify(actual == expected, True, message)
+        Traceback (most recent call last):
+            ...
+        UnmetExpectation: 'Foo' does not equal 'foo'
+    """
+    if expr != outcome:
+        raise UnmetExpectation(message)
+
 
 # Matchers
 # ========
@@ -117,8 +146,7 @@ def to_equal(self, expected):
         UnmetExpectation: Expected 'waiting...' to equal 'done!'
     """
     message = "Expected %r to equal %r" % (self.value, expected)
-    if (self.value == expected) != True:
-        raise UnmetExpectation(message)
+    verify(self.value == expected, True, message)
 
 
 @matcher
@@ -139,5 +167,4 @@ def to_be(self, expected):
     UnmetExpectation: Expected ['foo', 'bar'] to be ['foo', 'bar']
     """
     message = "Expected %r to be %r" % (self.value, expected)
-    if (self.value is expected) != True:
-        raise UnmetExpectation(message)
+    verify(self.value is expected, True, message)
