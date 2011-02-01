@@ -152,18 +152,18 @@ def to_equal(self, expected):
 def to_be(self, expected):
     """Compares values based on identity ("is")
     
-    Passes if the values are identical
+    Passes if the values are identical::
     
-    >>> a1 = a2 = ['foo', 'bar']
-    >>> expect(a1).to_be(a2)
+        >>> a1 = a2 = ['foo', 'bar']
+        >>> expect(a1).to_be(a2)
     
-    Fails if the values are not identical
+    Fails if the values are not identical::
     
-    >>> b1 = ['foo', 'bar']
-    >>> expect(a1).to_be(b1)
-    Traceback (most recent call last):
-        ...
-    UnmetExpectation: Expected ['foo', 'bar'] to be ['foo', 'bar']
+        >>> b1 = ['foo', 'bar']
+        >>> expect(a1).to_be(b1)
+        Traceback (most recent call last):
+            ...
+        UnmetExpectation: Expected ['foo', 'bar'] to be ['foo', 'bar']
     """
     message = "Expected %r to be %r" % (self.actual, expected)
     verify(self.actual is expected, True, message)
