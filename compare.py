@@ -43,12 +43,17 @@ class Expr(object):
     """
     def __init__(self, value):
         self.value = value
-        
+
+class UnmetExpectation(AssertionError):
+    """Error that is raised if an expectation is not met.
+    
+    This error class inherits AssertionError so it is compatible with
+    unittest assertion errors and plain old python "assert" errors.
+    """
 
 # provide a usable alias for the Expr class
 expect = Expr
 """Alias for the Expect class that starts an expectation contruct."""
-
 
 def matcher(func):
     """Decorator to register a function as a matcher. It attaches the
@@ -109,11 +114,11 @@ def to_equal(self, expected):
         >>> expect('waiting...').to_equal('done!')
         Traceback (most recent call last):
             ...
-        AssertionError: Expected 'waiting...' to equal 'done!'
+        UnmetExpectation: Expected 'waiting...' to equal 'done!'
     """
     message = "Expected %r to equal %r" % (self.value, expected)
     if (self.value == expected) != True:
-        raise AssertionError(message)
+        raise UnmetExpectation(message)
 
 
 @matcher
@@ -131,8 +136,8 @@ def to_be(self, expected):
     >>> expect(a1).to_be(b1)
     Traceback (most recent call last):
         ...
-    AssertionError: Expected ['foo', 'bar'] to be ['foo', 'bar']
+    UnmetExpectation: Expected ['foo', 'bar'] to be ['foo', 'bar']
     """
     message = "Expected %r to be %r" % (self.value, expected)
     if (self.value is expected) != True:
-        raise AssertionError(message)
+        raise UnmetExpectation(message)
