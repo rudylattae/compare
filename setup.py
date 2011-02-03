@@ -1,7 +1,7 @@
 import os
 from setuptools import setup
 
-version = '0.1a'
+version = '0.2dev'
 long_description = '\n\n'.join([
     open('README.rst').read(),
     open('CHANGES.txt').read(),
@@ -10,7 +10,7 @@ long_description = '\n\n'.join([
 setup(
     name = "compare",
     version = version,
-    description = "Concise, expressive syntax for comparing data values. A pluggable alternative to XUnit style asserts.",
+    description = "Alternative syntax for comparing/asserting expressions in Python. Supports pluggable matchers for custom comparisons.",
     long_description = long_description,
     author = "Rudy Lattae",
     author_email = "rudylattae@gmail.com",

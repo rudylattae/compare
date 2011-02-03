@@ -2,7 +2,12 @@
 Changelog
 =========
 
-0.1a (unreleased)
+
+0.2b (unreleased)
+=====================
+
+
+0.1a (2011-02-01)
 =====================
 
 * First public release
