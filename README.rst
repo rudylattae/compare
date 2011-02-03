@@ -1,14 +1,17 @@
 Overview
 ========
 
-Compare is a compact utility that provides a concise, expressive 
+Compare is a compact utility that provides an alternative, expressive 
 syntax for comparing data values. Have you been looking for a 
 escape from stale XUnit style asserts that plague the omni-present 
-`unittest <http://docs.python.org/library/unittest.html>`_? 
-Grab a lung-full of fresh pythonic air because compare is designed 
-to be a drop-in replacement for "self.assert..." cruft.
+`unittest <http://docs.python.org/library/unittest.html>`_? You may 
+have found just what you need. If compare fits your style, you may 
+use it as a drop-in replacement for "self.assert..." cruft.
 
-The compare public API exposes the **expect** construct which allows 
+Compare was designed to be a stand-alone alternative assertion syntax. 
+As such you may use it with your favorite testing/specification framework.
+
+The compare API exposes the **expect** construct which allows 
 you to compare values with readable and extensible syntax.
 
 

@@ -16,7 +16,7 @@ setup(
     author_email = "rudylattae@gmail.com",
     url = 'https://github.com/rudylattae/compare',
     license = "Simplified BSD",
-    keywords = ['compare', 'matcher', 'to be', 'to equal', 'assert', 'test equality', 'specification', 'BDD', 'TDD'],
+    keywords = ['python', 'compare', 'matcher', 'to be', 'to equal', 'assert', 'test equality', 'specification', 'BDD', 'TDD'],
     classifiers = [
         'Development Status :: 3 - Alpha',
         'Environment :: Console',
