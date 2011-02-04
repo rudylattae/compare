@@ -34,15 +34,23 @@ additional requirements beyond the
 Installation
 ------------
 
-You may install the latest stable release from PyPI with 
-``pip install compare`` or with ``easy_install specit``. Alternatively, 
-you may `download <http://pypi.python.org/pypi/compare>`_ the 
-source package from PyPI, extract it and install it using 
-``python setup.py install``.
+The simplest and recommended way to install compare is with Pip. You may install 
+the latest stable release from PyPI with pip::
 
-If you wish, you may download 
-`compare.py <https://github.com/rudylattae/compare/raw/master/compare.py>`_ 
-(development/unstable) and put it into your project directory.
+    > pip install compare
+
+If you do not have pip, you may use easy_install::
+
+    > easy_install compare
+
+Alternatively, you may `download <http://pypi.python.org/pypi/compare>`_ the 
+source package from PyPI, extract it and install it using::
+
+    > python setup.py install
+
+If you wish, you may download the in development (cutting-edge but unstable) 
+version `compare.py <https://github.com/rudylattae/compare/raw/master/compare.py>`_ 
+from the project repository and put it into your project directory.
 
 
 What you get
@@ -61,11 +69,11 @@ test-focused non-pythonic distrations like "self.assertEqual(s)...",
 Here is a trivial example of the clarity you gain when you 
 employ the "expect" construct in your specs.
 
-> cat hello.py::
+`> cat hello.py`::
 
     greeting = 'Hello you'
 
-> cat hello_specs.py::
+`> cat hello_specs.py`::
 
     from compare import expect
     import hello
