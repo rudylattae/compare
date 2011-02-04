@@ -1,15 +1,9 @@
 """The compare module contains the components you need to
 compare values and ensure that your expectations are met.
 
-To make use of this module, you simply import the "expect"
+To make use of this module, you simply import the `expect`
 starter into your spec/test file, and specify the expectation
 you have about two values.
-
-The expect starter is simply an alias to the Expr class so
-you may use it like so::
-
-    >>> expect(5 + 10).actual == 15
-    True
 """
 
 
@@ -54,7 +48,32 @@ class UnmetExpectation(AssertionError):
     
 # provide a usable alias for the Expr class
 expect = Expr
-"""Alias for the Expect class that starts an expectation contruct."""
+"""This is an alias for the ``Expr`` class that starts an expectation contruct.
+It makes it easier to construct a readable assertion/expectation for some 
+value, callable or expression that you are interested in.
+
+When you apply expect to a value or expression, that value is stored as an 
+attribute on the `Expr` instance that is returned. For instance the example 
+below shows how the "actual" attribute is the evaluated expression::
+
+    >>> expect(5 + 10).actual == 15
+    True
+    
+If expect is applied to a callable, it does not evaluate immediately. Whether or 
+not the callable is evaluated depends on the mather that is applied. So as you 
+can see from the example below, the callable is stored as-is::
+
+    >>> def call_me():
+    ...     return "I was called..."
+    >>> expect(call_me).actual      # doctest: +ELLIPSIS
+    <function call_me at 0x...>
+
+However, if the function is called and passed into expect, the actual value stored 
+is of course the return value of the callable::
+
+    >>> expect(call_me).actual == "I was called..."
+    True
+"""
 
 def matcher(func):
     """Decorator to register a function as a matcher. It attaches the
@@ -100,8 +119,12 @@ def matcher(func):
 
 def ensure(expr, outcome, message=""):
     """Compares the result of the given boolean expression to the anticipated
-    boolean outcome. If there is a match, all is well. If the comparison fails,
-    it raises an UnmetExpectation error with the given message
+    boolean outcome.
+    
+    All the the default matchers delegate to the trusty `ensure` helper to handle 
+    the actual determination of pass/fail for a given comparison. If there is a match, 
+    all is well. If the comparison fails, it raises an UnmetExpectation error with 
+    the given message.
     
     Stays quite if the comparison lines up::
     

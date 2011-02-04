@@ -3,10 +3,17 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-==================================================
-Compare: expect(self.assertEqual).NOT.to_exist()
-==================================================
+====================================================
+Compare : alternative syntax for your Python asserts
+====================================================
 
+::
+
+    expect(self.assertEqual).NOT.to_exist()
+
+Not really, but you get the idea...
+
+    
 .. include:: ../README.rst
 
 
@@ -15,12 +22,16 @@ User guide
 
 .. toctree::
    :maxdepth: 2
-
+    
+   
 API reference
 =============
 
 .. toctree::
    :maxdepth: 2
+
+   api
+
 
 Contribute
 ==========
