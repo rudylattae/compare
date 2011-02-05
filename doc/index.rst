@@ -13,7 +13,16 @@ Compare : alternative syntax for your Python asserts
 
 Not really, but you get the idea...
 
-    
+
+Updates
+=======
+
+.. toctree::
+   :maxdepth: 2
+   
+   releases
+
+
 .. include:: ../README.rst
 
 
@@ -24,7 +33,6 @@ User guide
    :maxdepth: 2
    
    usage
-   
    
 API reference
 =============

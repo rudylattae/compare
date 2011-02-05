@@ -59,14 +59,14 @@ What you get
 When you install the package, you get the **"expect"** starter, a simple 
 function that allows you to compare two values and fail if the outcome does 
 not meet your expectation. This starter has extensible matchers that 
-enable you to describe the expected outcome using a pythonic BDD manner. 
+enable you to describe the expected outcome in a pythonic BDD manner. 
 
 Compare shines brightest when you are crafting executable specifications 
 for your software. It helps you maintain your flow of thought without succumbing to 
 test-focused non-pythonic distrations like "self.assertEqual(s)...", 
 "self.assertTrue", etc.
 
-Here is a trivial example of the clarity you gain when you 
+Here is a trivial example of the readability you gain when you 
 employ the "expect" construct in your specs.
 
 `> cat hello.py`::
@@ -80,7 +80,9 @@ employ the "expect" construct in your specs.
     
     expect(hello.greeting).to_equal('Hello you')
 
-If you define an expectation that is not met, you will get an error like so::
+If you define an expectation that is not met, you will get an "Unmet Expectation" error 
+which inherits from the python AssertionError so it is compatible with the usual unittest 
+tools. Here is an example of such an error::
 
     >>> from compare import expect
     >>> opts = ['foo', 'bar', 'baz']
