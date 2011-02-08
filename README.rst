@@ -1,11 +1,16 @@
+.. _compare page on PyPI: http://pypi.python.org/pypi/compare
+.. _compare.py: https://github.com/rudylattae/compare/raw/master/compare.py
+.. _create an issue: https://github.com/rudylattae/compare/issues
+.. _unittest: http://docs.python.org/library/unittest.html
+.. _Python Standard Library: http://docs.python.org/library/
+
 Overview
 ========
 
 Compare is a compact utility that provides an alternative, expressive 
-syntax for comparing data values. Have you been looking for an 
-escape from the stale XUnit style asserts that plague the omni-present 
-`unittest <http://docs.python.org/library/unittest.html>`_? You may 
-have found just what you need. I invite you to take a look at this 
+syntax for comparing data values. Have you been looking for an escape 
+from the stale XUnit style asserts that plague the omni-present unittest_? 
+You may have found just what you need. I invite you to take a look at this 
 little utility. If it fits your style, you may use it as a drop-in 
 replacement for the "self.assert..." style of doing assertions in python.
 
@@ -27,8 +32,7 @@ Requirements
 ------------
 
 The core implementation of compare is a single file module with no 
-additional requirements beyond the 
-`Python Standard Library <http://docs.python.org/library/>`_.
+additional requirements beyond the `Python Standard Library`_.
 
 
 Installation
@@ -43,14 +47,13 @@ If you do not have pip, you may use easy_install::
 
     > easy_install compare
 
-Alternatively, you may `download <http://pypi.python.org/pypi/compare>`_ the 
-source package from PyPI, extract it and install it using::
+Alternatively, you may download the source package from the `compare page on PyPI`_, 
+extract it and install it using::
 
     > python setup.py install
 
-If you wish, you may download the in development (cutting-edge but unstable) 
-version `compare.py <https://github.com/rudylattae/compare/raw/master/compare.py>`_ 
-from the project repository and put it into your project directory.
+If you wish, you may grab the in development (cutting-edge but unstable) 
+version `compare.py`_ from the project repository and put it into your project directory.
 
 
 What you get
@@ -100,7 +103,6 @@ improve compare. Let me know what you think about compare. I am on twitter
 `@RudyLattae <http://twitter.com/RudyLattae>`_ . I appreciate constructive 
 criticsms or high fives :)
 
-Do you have suggestions for improvement? Then please create an 
-`issue <https://github.com/rudylattae/compare/issues>`_ with details 
+Do you have suggestions for improvement? Then please `create an issue`_ with details 
 of what you would like to see. I'll take a look at it and work with you to either kill 
 the idea or implement it.

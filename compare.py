@@ -1,13 +1,13 @@
 """The compare module contains the components you need to
 compare values and ensure that your expectations are met.
 
-To make use of this module, you simply import the `expect`
+To make use of this module, you simply import the :func:`expect`
 starter into your spec/test file, and specify the expectation
 you have about two values.
 """
 
 
-# core
+# Core
 # ====
 
 class Expr(object):
@@ -41,14 +41,14 @@ class Expr(object):
 class UnmetExpectation(AssertionError):
     """Error that is raised if an expectation is not met.
     
-    This error class inherits AssertionError so it is compatible with
+    This error class inherits :py:exc:`AssertionError` so it is compatible with
     unittest assertion errors and plain old python "assert" errors.
     """
     pass
     
 # provide a usable alias for the Expr class
 expect = Expr
-"""This is an alias for the ``Expr`` class that starts an expectation contruct.
+"""This is an alias for the :class:`Expr` class that starts an expectation contruct.
 It makes it easier to construct a readable assertion/expectation for some 
 value, callable or expression that you are interested in.
 

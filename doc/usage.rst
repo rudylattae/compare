@@ -2,7 +2,7 @@
 Usage examples
 ==============
 
-To make use of compare, simply import the expect function into 
+To make use of compare, simply import the :func:`expect` function into 
 your module. You may then use the function to handle any comparisons 
 and assertions you wish to make about values in your code.
 
@@ -28,7 +28,7 @@ Creating and using custom matchers
 ----------------------------------
 
 A compare matcher is a regular python function that can be 
-wired into the ``Expr`` class. You may extend compare with 
+wired into the :class:`Expr` class. You may extend compare with 
 custom matchers that make make your examples succinct and 
 easy to follow::
 

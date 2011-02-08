@@ -3,6 +3,11 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+.. _compare source: https://github.com/rudylattae/compare
+.. _Jasmine BDD: http://pivotal.github.com/jasmine
+.. _PySpec: http://pyspec.codeplex.com/
+.. _should-dsl: http://www.should-dsl.info/
+
 ====================================================
 Compare : alternative syntax for your Python asserts
 ====================================================
@@ -40,14 +45,15 @@ API reference
 .. toctree::
    :maxdepth: 2
 
-   api
+   core-api
+   core-matchers
 
 
 Contribute
 ==========
 
-To contribute to compare, fork the `project source <https://github.com/rudylattae/compare>`_, 
-make your modifications and create a pull request. I'll be more than happy to merge in your work.
+To contribute to the project, fork the `compare source`_, make your modifications 
+and create a pull request. I'll be more than happy to merge in your work.
 
 Please ensure that you provide supporting specs for your contribution. Also if you are 
 creating a new feature or fixing a bug, I encourage you to create an issue for it 
@@ -59,9 +65,9 @@ Acknowledgements
 
 The expect syntax used in compare was inspired by and/or builds on ideas from:
 
-* `Jasmine BDD <http://pivotal.github.com/jasmine>`_ 
-* `PySpec <http://pyspec.codeplex.com/>`_
-* `should-dsl <http://www.should-dsl.info/>`_
+* `Jasmine BDD`_ 
+* `PySpec`_
+* `should-dsl`_
 
 
 License
