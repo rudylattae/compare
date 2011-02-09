@@ -191,7 +191,89 @@ def to_be(self, expected):
     """
     message = "Expected %r to be %r" % (self.actual, expected)
     ensure(self.actual is expected, True, message)
+
+@matcher
+def to_be_truthy(self):
+    """Evaluates the Python "truthiness" (boolean not not) of a given expression.
+    It is the equivalent of doing::
     
+        if foo:
+            # do something if the value of foo is "truthy"
+    
+    Passes if the given value is truthy::
+    
+        >>> foo = 'This is truthy'
+        >>> expect(foo).to_be_truthy()
+    
+    Fails of the given value does not evaluate as truthy::
+    
+        >>> bar = ''
+        >>> expect(bar).to_be_truthy()
+        Traceback (most recent call last):
+            ...
+        UnmetExpectation: Expected '' to be truthy
+        
+    As you would expect, the number 1 is truthy but 0 is not
+        >>> expect(1).to_be_truthy()
+        >>> expect(0).to_be_truthy()
+        Traceback (most recent call last):
+            ...
+        UnmetExpectation: Expected 0 to be truthy
+    
+    A value of True is truthy but False and None are not
+        >>> expect(True).to_be_truthy()
+        >>> expect(False).to_be_truthy()
+        Traceback (most recent call last):
+            ...
+        UnmetExpectation: Expected False to be truthy
+        >>> expect(None).to_be_truthy()
+        Traceback (most recent call last):
+            ...
+        UnmetExpectation: Expected None to be truthy
+    """
+    message = "Expected %r to be truthy" % self.actual
+    ensure(not not self.actual, True, message)
+
+@matcher
+def to_be_falsy(self):
+    """Evaluates the Python "falsyness" (boolean not) of a given expression.
+    
+    It is the equivalent of doing::
+    
+        if not foo:
+            # do something if the value of foo is "falsy"
+    
+    Passes if the given value is falsy::
+    
+        >>> foo = ''
+        >>> expect(foo).to_be_falsy()
+    
+    Fails of the given value does not evaluate as falsy::
+    
+        >>> bar = 'This is not falsy'
+        >>> expect(bar).to_be_falsy()
+        Traceback (most recent call last):
+            ...
+        UnmetExpectation: Expected 'This is not falsy' to be falsy
+        
+    The number 0 is falsy but 1 is not
+        >>> expect(0).to_be_falsy()
+        >>> expect(1).to_be_falsy()
+        Traceback (most recent call last):
+            ...
+        UnmetExpectation: Expected 1 to be falsy
+    
+    The values False and None are falsy but True is not
+        >>> expect(False).to_be_falsy()
+        >>> expect(None).to_be_falsy()
+        >>> expect(True).to_be_falsy()
+        Traceback (most recent call last):
+            ...
+        UnmetExpectation: Expected True to be falsy
+    """
+    message = "Expected %r to be falsy" % self.actual
+    ensure(not self.actual, True, message)
+
 @matcher
 def to_contain(self, expected):
     """Checks if the actual value contains the expected value.
@@ -212,7 +294,7 @@ def to_contain(self, expected):
         UnmetExpectation: Expected ['dog', 'whale', 'cat'] to contain 'fly'
     
     Works for stings::
-
+    
         >>> foo = "There is a BAR in here"
         >>> expect(foo).to_contain('BAR')
     
@@ -246,3 +328,71 @@ def to_return(self, expected):
     actual = self.actual()
     message = "Expected callable to return %r but got %r" % (expected, actual)
     ensure(actual == expected, True, message)
+
+@matcher
+def to_raise(self, exception_class=None, exception_message=None):
+    """Invokes the provided callable and ensures that it raises an Exception.
+    
+    Passes if the callable raises an exeption (any exception)::
+    
+        >>> def bad():
+        ...     raise Exception()
+        >>> expect(bad).to_raise()
+        
+    Fails if the callable does not raise any exception::
+    
+        >>> def good():
+        ...     return "No exceptions here"
+        >>> expect(good).to_raise()
+        Traceback (most recent call last):
+            ...
+        UnmetExpectation: Expected callable to raise an exception
+        
+    You may specify the type of exception you expect to be raised. The expectation 
+    will fail if the callable raises an exception which is not an instance of the 
+    expected exception class::
+    
+        >>> class MildError(Exception):
+        ...     pass
+        >>> class CatastrophicError(Exception):
+        ...     pass
+        
+        >>> def raise_custom_exception():
+        ...     raise MildError
+        >>> expect(raise_custom_exception).to_raise(CatastrophicError)
+        Traceback (most recent call last):
+            ...
+        UnmetExpectation: Expected callable to raise CatastrophicError() but got MildError()
+        
+    Further, you may specify the message you expect the exception to be raised with.
+    The expectation will fails if the callable raises the right exception but with 
+    a non matching message::
+    
+        >>> def raise_exception_with_message():
+        ...     raise CatastrophicError('BOOM!')
+
+        >>> expect(raise_exception_with_message).to_raise(CatastrophicError, 'Ohly Crap...')
+        Traceback (most recent call last):
+            ...
+        UnmetExpectation: Expected callable to raise CatastrophicError('Ohly Crap...',) 
+          but got CatastrophicError('BOOM!',)
+    """
+    raised = False
+    actual_exception = None
+    
+    try:
+        self.actual()
+    except Exception as e:
+        actual_exception = e
+        raised = True
+    
+    if exception_class and exception_message:
+        message = "Expected callable to raise %r \n  but got %r" % (exception_class(exception_message), actual_exception)
+        ensure(raised and isinstance(actual_exception, exception_class) and actual_exception.message == exception_message, True, message)
+    elif exception_class:
+        message = "Expected callable to raise %r but got %r" % (exception_class(), actual_exception)
+        ensure(raised and isinstance(actual_exception, exception_class), True, message)
+    else:
+        message = "Expected callable to raise an exception"
+        ensure(raised, True, message)
+    
