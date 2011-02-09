@@ -279,6 +279,25 @@ def to_be_falsy(self):
     ensure(not self.actual, True, message)
 
 @matcher
+def to_be_none(self):
+    """Checks that the given value is None.
+    
+    Passes if the given value is None::
+    
+        >>> foo = None
+        >>> expect(foo).to_be_none()
+    
+    Fails if the given value is not None::
+        >>> bar = 'This is not None'
+        >>> expect(bar).to_be_none()
+        Traceback (most recent call last):
+            ...
+        UnmetExpectation: Expected 'This is not None' to be None
+    """
+    message = "Expected %r to be None" % self.actual
+    ensure(self.actual is None, True, message)
+
+@matcher
 def to_contain(self, expected):
     """Checks if the actual value contains the expected value.
     

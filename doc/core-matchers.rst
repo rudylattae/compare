@@ -28,7 +28,8 @@ Here are the matchers that are available by default:
 
 .. automethod:: Expr.to_equal
 .. automethod:: Expr.to_be
-.. automethod:: Expr.to_be_truthy
-.. automethod:: Expr.to_be_falsy
 .. automethod:: Expr.to_return
 .. automethod:: Expr.to_raise
+.. automethod:: Expr.to_be_none
+.. automethod:: Expr.to_be_truthy
+.. automethod:: Expr.to_be_falsy
