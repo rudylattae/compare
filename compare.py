@@ -193,6 +193,25 @@ def to_be(self, expected):
     ensure(self.actual is expected, True, message)
 
 @matcher
+def to_be_none(self):
+    """Checks that the given value is None.
+    
+    Passes if the given value is None::
+    
+        >>> foo = None
+        >>> expect(foo).to_be_none()
+    
+    Fails if the given value is not None::
+        >>> bar = 'This is not None'
+        >>> expect(bar).to_be_none()
+        Traceback (most recent call last):
+            ...
+        UnmetExpectation: Expected 'This is not None' to be None
+    """
+    message = "Expected %r to be None" % self.actual
+    ensure(self.actual is None, True, message)
+
+@matcher
 def to_be_truthy(self):
     """Evaluates the Python "truthiness" (boolean not not) of a given expression.
     It is the equivalent of doing::
@@ -277,25 +296,6 @@ def to_be_falsy(self):
     """
     message = "Expected %r to be falsy" % self.actual
     ensure(not self.actual, True, message)
-
-@matcher
-def to_be_none(self):
-    """Checks that the given value is None.
-    
-    Passes if the given value is None::
-    
-        >>> foo = None
-        >>> expect(foo).to_be_none()
-    
-    Fails if the given value is not None::
-        >>> bar = 'This is not None'
-        >>> expect(bar).to_be_none()
-        Traceback (most recent call last):
-            ...
-        UnmetExpectation: Expected 'This is not None' to be None
-    """
-    message = "Expected %r to be None" % self.actual
-    ensure(self.actual is None, True, message)
 
 @matcher
 def to_contain(self, expected):

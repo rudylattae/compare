@@ -25,6 +25,10 @@ Here are the matchers that are available by default:
 =======
 .. automethod:: Expr.to_be
 
+`to_be_none`
+============
+.. automethod:: Expr.to_be_none
+
 `to_be_truthy`
 ==============
 .. automethod:: Expr.to_be_truthy
@@ -32,10 +36,6 @@ Here are the matchers that are available by default:
 `to_be_falsy`
 =============
 .. automethod:: Expr.to_be_falsy
-
-`to_be_none`
-============
-.. automethod:: Expr.to_be_none
 
 `to_contain`
 ============
