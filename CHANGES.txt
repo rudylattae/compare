@@ -1,6 +1,6 @@
-========
-Releases
-========
+=========
+Changelog
+=========
 
 
 0.2b -- unreleased
