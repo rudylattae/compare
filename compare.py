@@ -213,14 +213,16 @@ def to_be_truthy(self):
             ...
         UnmetExpectation: Expected '' to be truthy
         
-    As you would expect, the number 1 is truthy but 0 is not
+    As you would expect, the number `1` is truthy but `0` is not::
+    
         >>> expect(1).to_be_truthy()
         >>> expect(0).to_be_truthy()
         Traceback (most recent call last):
             ...
         UnmetExpectation: Expected 0 to be truthy
     
-    A value of True is truthy but False and None are not
+    A value of `True` is truthy but `False` and `None` are not::
+    
         >>> expect(True).to_be_truthy()
         >>> expect(False).to_be_truthy()
         Traceback (most recent call last):
@@ -255,15 +257,17 @@ def to_be_falsy(self):
         Traceback (most recent call last):
             ...
         UnmetExpectation: Expected 'This is not falsy' to be falsy
-        
-    The number 0 is falsy but 1 is not
+    
+    The number `0` is falsy but `1` is not::
+    
         >>> expect(0).to_be_falsy()
         >>> expect(1).to_be_falsy()
         Traceback (most recent call last):
             ...
         UnmetExpectation: Expected 1 to be falsy
     
-    The values False and None are falsy but True is not
+    The values `False` and `None` are falsy but `True` is not::
+    
         >>> expect(False).to_be_falsy()
         >>> expect(None).to_be_falsy()
         >>> expect(True).to_be_falsy()
