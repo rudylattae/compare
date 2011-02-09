@@ -5,14 +5,28 @@ Core API
 .. automodule:: compare
 
 
-Syntax
-======
+`expect()`
+==========
 
 .. autodata:: expect
 
+
+`@matcher`
+==========
+
 .. autofunction:: matcher
 
+
+`ensure()`
+==========
+
 .. autofunction:: ensure
+
+
+The `Expr` class
+================
+
+.. autoclass:: Expr
 
 
 Exceptions
