@@ -369,7 +369,7 @@ def to_raise(self, exception_class=None, exception_message=None):
         UnmetExpectation: Expected callable to raise CatastrophicError() but got MildError()
         
     Further, you may specify the message you expect the exception to be raised with.
-    The expectation will fails if the callable raises the right exception but with 
+    The expectation will fail if the callable raises the right exception but with 
     a non matching message::
     
         >>> def raise_exception_with_message():
