@@ -25,18 +25,6 @@ Here are the matchers that are available by default:
 =======
 .. automethod:: Expr.to_be
 
-`to_return`
-===========
-.. automethod:: Expr.to_return
-
-`to_raise`
-==========
-.. automethod:: Expr.to_raise
-
-`to_be_none`
-============
-.. automethod:: Expr.to_be_none
-
 `to_be_truthy`
 ==============
 .. automethod:: Expr.to_be_truthy
@@ -44,3 +32,19 @@ Here are the matchers that are available by default:
 `to_be_falsy`
 =============
 .. automethod:: Expr.to_be_falsy
+
+`to_be_none`
+============
+.. automethod:: Expr.to_be_none
+
+`to_contain`
+============
+.. automethod:: Expr.to_contain
+
+`to_return`
+===========
+.. automethod:: Expr.to_return
+
+`to_raise`
+==========
+.. automethod:: Expr.to_raise
