@@ -202,6 +202,7 @@ def to_be_none(self):
         >>> expect(foo).to_be_none()
     
     Fails if the given value is not None::
+    
         >>> bar = 'This is not None'
         >>> expect(bar).to_be_none()
         Traceback (most recent call last):
