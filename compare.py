@@ -193,6 +193,29 @@ def to_be(self, other):
     ensure(self.value is other, True, message)
 
 @matcher
+def to_be_less_than(self, other):
+    """Compares wrapped `value` to `other` with "<"
+    
+    Passes if the wrapped `value` is less than `other`::
+    
+        >>> expect(9).to_be_less_than(10)
+    
+    Fails if wrapped `value` is greater than or equal to `other`::
+    
+        >>> expect(9).to_be_less_than(5)
+        Traceback (most recent call last):
+            ...
+        UnmetExpectation: Expected 9 to be less than 5
+        
+        >>> expect(9).to_be_less_than(9)
+        Traceback (most recent call last):
+            ...
+        UnmetExpectation: Expected 9 to be less than 9
+    """
+    message = "Expected %r to be less than %r" % (self.value, other)
+    ensure(self.value < other, True, message)
+
+@matcher
 def to_be_none(self):
     """Checks that the wrapped `value` is None.
     
