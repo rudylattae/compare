@@ -86,3 +86,7 @@ http://docs.python.org/reference/datamodel.html#special-method-names
 `< , less than`
 ---------------
 .. automethod:: Expr.__lt__
+
+`<= , less than or equal to`
+----------------------------
+.. automethod:: Expr.__le__

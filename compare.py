@@ -548,7 +548,7 @@ def __lt__(self, other):
     
         >>> expect(45) < 50
     
-    Fails if the values are not equal::
+    Fails if the wrapped `value` is not less than `other`::
     
         >>> expect(350) < 200
         Traceback (most recent call last):
@@ -556,3 +556,23 @@ def __lt__(self, other):
         UnmetExpectation: Expected 350 to be less than 200
     """
     self.to_be_less_than(other)
+
+@matcher
+def __le__(self, other):
+    """Checks if `value <= other`. It is an alternative to the 
+    to_be_less_than_or_equal_to base matcher. For instance, this example::
+    
+        >>> expect(50).to_be_less_than_or_equal_to(50)
+    
+    May be expressed as::
+    
+        >>> expect(50) <= 50
+    
+    Fails if the wrapped `value` is greater than `other`::
+    
+        >>> expect(201) <= 200
+        Traceback (most recent call last):
+            ...
+        UnmetExpectation: Expected 201 to be less than or equal to 200
+    """
+    self.to_be_less_than_or_equal_to(other)
