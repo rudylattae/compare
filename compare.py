@@ -7,8 +7,8 @@ you have about two values.
 """
 
 
-# Core
-# ====
+# Core API
+# ========
 
 class Expr(object):
     """Encapsulates a python expression, primitive value or callable
@@ -151,8 +151,8 @@ def ensure(expr, outcome, message=""):
         raise UnmetExpectation(message)
 
 
-# Matchers
-# ========
+# Core Matchers
+# =============
 
 @matcher
 def to_equal(self, expected):
@@ -214,11 +214,22 @@ def to_be_none(self):
 
 @matcher
 def to_be_truthy(self):
-    """Evaluates the Python "truthiness" (boolean not not) of a given expression.
-    It is the equivalent of doing::
+    """Evaluates the Python "truthiness" -- `bool()` of a given expression.
+    See :meth:`to_be_falsy` for inverse matcher.
     
-        if foo:
-            # do something if the value of foo is "truthy"
+    Here are some examples of a truth value test::
+    
+        >>> bool(1)
+        True
+        >>> bool(0)
+        False
+        >>> bool('')
+        False
+        >>> bool('Foo')
+        True
+    
+    For more information about truth value testing in Python please see 
+    http://docs.python.org/library/stdtypes.html#truth-value-testing
     
     Passes if the given value is truthy::
     
@@ -254,16 +265,12 @@ def to_be_truthy(self):
         UnmetExpectation: Expected None to be truthy
     """
     message = "Expected %r to be truthy" % self.actual
-    ensure(not not self.actual, True, message)
+    ensure(bool(self.actual), True, message)
 
 @matcher
 def to_be_falsy(self):
-    """Evaluates the Python "falsyness" (boolean not) of a given expression.
-    
-    It is the equivalent of doing::
-    
-        if not foo:
-            # do something if the value of foo is "falsy"
+    """Evaluates the Python "falsyness" -- `not bool()` of a given expression.
+    See :meth:`to_be_truthy` for inverse matcher and details on Python truth tests.
     
     Passes if the given value is falsy::
     
@@ -296,7 +303,7 @@ def to_be_falsy(self):
         UnmetExpectation: Expected True to be falsy
     """
     message = "Expected %r to be falsy" % self.actual
-    ensure(not self.actual, True, message)
+    ensure(not bool(self.actual), True, message)
 
 @matcher
 def to_contain(self, expected):
