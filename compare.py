@@ -22,21 +22,21 @@ class Expr(object):
     It initializes with primitives, native types and expressions::
     
         >>> e = Expr("Foo")
-        >>> e.actual == "Foo"
+        >>> e.value == "Foo"
         True
         
         >>> e = Expr(['a', 'b'])
-        >>> e.actual == ['a', 'b']
+        >>> e.value == ['a', 'b']
         True
     
-        >>> Expr(4 + 7).actual == 11
+        >>> Expr(4 + 7).value == 11
         True
     
-        >>> Expr(4 == 7).actual == False
+        >>> Expr(4 == 7).value == False
         True
     """
     def __init__(self, expr):
-        self.actual = expr
+        self.value = expr
 
 class UnmetExpectation(AssertionError):
     """Error that is raised if an expectation is not met.
@@ -56,7 +56,7 @@ When you apply expect to a value or expression, that value is stored as an
 attribute on the `Expr` instance that is returned. For instance the example 
 below shows how the "actual" attribute is the evaluated expression::
 
-    >>> expect(5 + 10).actual == 15
+    >>> expect(5 + 10).value == 15
     True
     
 If expect is applied to a callable, it does not evaluate immediately. Whether or 
@@ -65,13 +65,13 @@ can see from the example below, the callable is stored as-is::
 
     >>> def call_me():
     ...     return "I was called..."
-    >>> expect(call_me).actual      # doctest: +ELLIPSIS
+    >>> expect(call_me).value      # doctest: +ELLIPSIS
     <function call_me at 0x...>
 
 However, if the function is called and passed into expect, the actual value stored 
 is of course the return value of the callable::
 
-    >>> expect(call_me).actual == "I was called..."
+    >>> expect(call_me).value == "I was called..."
     True
 """
 
@@ -86,7 +86,7 @@ def matcher(func):
     Here is a trivial example showing how to create and register a matcher::
     
         >>> def to_equal_foo(self):
-        ...     assert self.actual == "foo"
+        ...     assert self.value == "foo"
         >>> matcher(to_equal_foo)
     
     Now you may use the matcher with the expect syntax::
@@ -101,7 +101,7 @@ def matcher(func):
     and it spits out a helpful message if the comparison fails::
     
         >>> def to_equal(self, expected):
-        ...     assert self.actual == expected, "Expected '%s' to equal '%s'" % (self.actual, expected)
+        ...     assert self.value == expected, "Expected '%s' to equal '%s'" % (self.value, expected)
         >>> matcher(to_equal)
         
     You may now use the matcher in an expectation::
@@ -169,8 +169,8 @@ def to_equal(self, expected):
             ...
         UnmetExpectation: Expected 'waiting...' to equal 'done!'
     """
-    message = "Expected %r to equal %r" % (self.actual, expected)
-    ensure(self.actual == expected, True, message)
+    message = "Expected %r to equal %r" % (self.value, expected)
+    ensure(self.value == expected, True, message)
 
 @matcher
 def to_be(self, expected):
@@ -189,8 +189,8 @@ def to_be(self, expected):
             ...
         UnmetExpectation: Expected ['foo', 'bar'] to be ['foo', 'bar']
     """
-    message = "Expected %r to be %r" % (self.actual, expected)
-    ensure(self.actual is expected, True, message)
+    message = "Expected %r to be %r" % (self.value, expected)
+    ensure(self.value is expected, True, message)
 
 @matcher
 def to_be_none(self):
@@ -209,8 +209,8 @@ def to_be_none(self):
             ...
         UnmetExpectation: Expected 'This is not None' to be None
     """
-    message = "Expected %r to be None" % self.actual
-    ensure(self.actual is None, True, message)
+    message = "Expected %r to be None" % self.value
+    ensure(self.value is None, True, message)
 
 @matcher
 def to_be_truthy(self):
@@ -264,8 +264,8 @@ def to_be_truthy(self):
             ...
         UnmetExpectation: Expected None to be truthy
     """
-    message = "Expected %r to be truthy" % self.actual
-    ensure(bool(self.actual), True, message)
+    message = "Expected %r to be truthy" % self.value
+    ensure(bool(self.value), True, message)
 
 @matcher
 def to_be_falsy(self):
@@ -302,8 +302,8 @@ def to_be_falsy(self):
             ...
         UnmetExpectation: Expected True to be falsy
     """
-    message = "Expected %r to be falsy" % self.actual
-    ensure(not bool(self.actual), True, message)
+    message = "Expected %r to be falsy" % self.value
+    ensure(not bool(self.value), True, message)
 
 @matcher
 def to_contain(self, expected):
@@ -334,8 +334,8 @@ def to_contain(self, expected):
         >>> pos = {'x': 40, 'y': 500}
         >>> expect(pos).to_contain('x')
     """
-    message = "Expected %r to contain %r" % (self.actual, expected)
-    ensure(expected in self.actual, True, message)
+    message = "Expected %r to contain %r" % (self.value, expected)
+    ensure(expected in self.value, True, message)
     
 @matcher
 def to_return(self, expected):
@@ -356,7 +356,7 @@ def to_return(self, expected):
             ...
         UnmetExpectation: Expected callable to return 'Bar' but got 'Barf'
     """
-    actual = self.actual()
+    actual = self.value()
     message = "Expected callable to return %r but got %r" % (expected, actual)
     ensure(actual == expected, True, message)
 
@@ -412,7 +412,7 @@ def to_raise(self, exception_class=None, exception_message=None):
     actual_exception = None
     
     try:
-        self.actual()
+        self.value()
     except Exception as e:
         actual_exception = e
         raised = True
