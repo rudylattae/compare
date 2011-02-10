@@ -29,6 +29,10 @@ Here are the matchers that are available by default:
 =================
 .. automethod:: Expr.to_be_less_than
 
+`to_be_greater_than`
+=================
+.. automethod:: Expr.to_be_greater_than
+
 `to_be_none`
 ============
 .. automethod:: Expr.to_be_none

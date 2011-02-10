@@ -156,7 +156,7 @@ def ensure(expr, outcome, message=""):
 
 @matcher
 def to_equal(self, other):
-    """Compares wrapped `value` to `other` based on simple equality "=="
+    """Checks if `value == other` -- simple equality.
     
     Passes if the values are equal::
     
@@ -174,7 +174,7 @@ def to_equal(self, other):
 
 @matcher
 def to_be(self, other):
-    """Compares wrapped `value` to `other` based on identity ("is")
+    """Checks if `value is other` -- identity, id().
     
     Passes if the values are identical::
     
@@ -194,7 +194,7 @@ def to_be(self, other):
 
 @matcher
 def to_be_less_than(self, other):
-    """Compares wrapped `value` to `other` with "<"
+    """Checks if `value < other`.
     
     Passes if the wrapped `value` is less than `other`::
     
@@ -214,6 +214,29 @@ def to_be_less_than(self, other):
     """
     message = "Expected %r to be less than %r" % (self.value, other)
     ensure(self.value < other, True, message)
+    
+@matcher
+def to_be_greater_than(self, other):
+    """Checks if `value > other`.
+    
+    Passes if the wrapped `value` is greater than `other`::
+    
+        >>> expect(20).to_be_greater_than(10)
+    
+    Fails if wrapped `value` is less than or equal to `other`::
+    
+        >>> expect(20).to_be_greater_than(30)
+        Traceback (most recent call last):
+            ...
+        UnmetExpectation: Expected 20 to be greater than 30
+        
+        >>> expect(20).to_be_greater_than(20)
+        Traceback (most recent call last):
+            ...
+        UnmetExpectation: Expected 20 to be greater than 20
+    """
+    message = "Expected %r to be greater than %r" % (self.value, other)
+    ensure(self.value > other, True, message)
 
 @matcher
 def to_be_none(self):
