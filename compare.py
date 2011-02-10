@@ -576,3 +576,43 @@ def __le__(self, other):
         UnmetExpectation: Expected 201 to be less than or equal to 200
     """
     self.to_be_less_than_or_equal_to(other)
+
+@matcher
+def __gt__(self, other):
+    """Checks if `value > other`. It is an alternative to the to_be_greater_than base matcher.
+    For instance, this example::
+    
+        >>> expect(45).to_be_greater_than(40)
+    
+    May be expressed as::
+    
+        >>> expect(45) > 40
+    
+    Fails if the wrapped `value` is not greater than `other`::
+    
+        >>> expect(150) > 200
+        Traceback (most recent call last):
+            ...
+        UnmetExpectation: Expected 150 to be greater than 200
+    """
+    self.to_be_greater_than(other)
+
+@matcher
+def __ge__(self, other):
+    """Checks if `value >= other`. It is an alternative to the 
+    to_be_greater_than_or_equal_to base matcher. For instance, this example::
+    
+        >>> expect(50).to_be_greater_than_or_equal_to(50)
+    
+    May be expressed as::
+    
+        >>> expect(50) >= 50
+    
+    Fails if the wrapped `value` is less than `other`::
+    
+        >>> expect(199) >= 200
+        Traceback (most recent call last):
+            ...
+        UnmetExpectation: Expected 199 to be greater than or equal to 200
+    """
+    self.to_be_greater_than_or_equal_to(other)

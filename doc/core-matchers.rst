@@ -90,3 +90,11 @@ http://docs.python.org/reference/datamodel.html#special-method-names
 `<= , less than or equal to`
 ----------------------------
 .. automethod:: Expr.__le__
+
+`> , greater than`
+-------------------
+.. automethod:: Expr.__gt__
+
+`>= , greater than or equal to`
+--------------------------------
+.. automethod:: Expr.__ge__
