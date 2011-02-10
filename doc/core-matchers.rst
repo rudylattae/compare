@@ -79,6 +79,10 @@ methods to provide succinct alternatives to some of the more verbose `base match
 For more information on these special methods, please see: 
 http://docs.python.org/reference/datamodel.html#special-method-names
 
-`==`
-----
+`== , equal to`
+---------------
 .. automethod:: Expr.__eq__
+
+`< , less than`
+---------------
+.. automethod:: Expr.__lt__

@@ -515,11 +515,11 @@ def to_raise(self, exception_class=None, exception_message=None):
 # Rich Comparison Matchers
 # ========================
 # These are convenient matchers that harness the Python "rich comparison" 
-# methods to provide alternatives to some of the more verbose the core matchers.
+# methods to provide alternatives to some of the more verbose the base matchers.
 
 @matcher
 def __eq__(self, other):
-    """Checks if `value == other`. It is an alternative to the to_equal core matcher.
+    """Checks if `value == other`. It is an alternative to the to_equal base matcher.
     For instance, this example::
     
         >>> expect(555).to_equal(555)
@@ -536,3 +536,23 @@ def __eq__(self, other):
         UnmetExpectation: Expected 'waiting...' to equal 'done!'
     """
     self.to_equal(other)
+
+@matcher
+def __lt__(self, other):
+    """Checks if `value < other`. It is an alternative to the to_be_less_than base matcher.
+    For instance, this example::
+    
+        >>> expect(45).to_be_less_than(50)
+    
+    May be expressed as::
+    
+        >>> expect(45) < 50
+    
+    Fails if the values are not equal::
+    
+        >>> expect(350) < 200
+        Traceback (most recent call last):
+            ...
+        UnmetExpectation: Expected 350 to be less than 200
+    """
+    self.to_be_less_than(other)
