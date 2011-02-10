@@ -151,7 +151,7 @@ def ensure(expr, outcome, message=""):
         raise UnmetExpectation(message)
 
 
-# Core Matchers
+# Base Matchers
 # =============
 
 @matcher
@@ -510,4 +510,29 @@ def to_raise(self, exception_class=None, exception_message=None):
     else:
         message = "Expected callable to raise an exception"
         ensure(raised, True, message)
+
+
+# Rich Comparison Matchers
+# ========================
+# These are convenient matchers that harness the Python "rich comparison" 
+# methods to provide alternatives to some of the more verbose the core matchers.
+
+@matcher
+def __eq__(self, other):
+    """Checks if `value == other`. It is an alternative to the to_equal core matcher.
+    For instance, this example::
     
+        >>> expect(555).to_equal(555)
+    
+    May be expressed as::
+    
+        >>> expect(555) == 555
+    
+    Fails if the values are not equal::
+    
+        >>> expect('waiting...') == 'done!'
+        Traceback (most recent call last):
+            ...
+        UnmetExpectation: Expected 'waiting...' to equal 'done!'
+    """
+    self.to_equal(other)
