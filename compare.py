@@ -216,6 +216,25 @@ def to_be_less_than(self, other):
     ensure(self.value < other, True, message)
     
 @matcher
+def to_be_less_than_or_equal_to(self, other):
+    """Checks if `value <= other`.
+    
+    Passes if the wrapped `value` is less than or equal to `other`::
+    
+        >>> expect(9).to_be_less_than_or_equal_to(10)
+        >>> expect(9).to_be_less_than_or_equal_to(9)
+    
+    Fails if wrapped `value` is greater than `other`::
+    
+        >>> expect(9).to_be_less_than_or_equal_to(5)
+        Traceback (most recent call last):
+            ...
+        UnmetExpectation: Expected 9 to be less than or equal to 5
+    """
+    message = "Expected %r to be less than or equal to %r" % (self.value, other)
+    ensure(self.value <= other, True, message)
+    
+@matcher
 def to_be_greater_than(self, other):
     """Checks if `value > other`.
     
@@ -237,6 +256,25 @@ def to_be_greater_than(self, other):
     """
     message = "Expected %r to be greater than %r" % (self.value, other)
     ensure(self.value > other, True, message)
+    
+@matcher
+def to_be_greater_than_or_equal_to(self, other):
+    """Checks if `value >= other`.
+    
+    Passes if the wrapped `value` is greater than or equal to `other`::
+    
+        >>> expect(20).to_be_greater_than_or_equal_to(10)
+        >>> expect(20).to_be_greater_than_or_equal_to(20)
+    
+    Fails if wrapped `value` is less than `other`::
+    
+        >>> expect(20).to_be_greater_than_or_equal_to(30)
+        Traceback (most recent call last):
+            ...
+        UnmetExpectation: Expected 20 to be greater than or equal to 30
+    """
+    message = "Expected %r to be greater than or equal to %r" % (self.value, other)
+    ensure(self.value >= other, True, message)
 
 @matcher
 def to_be_none(self):
