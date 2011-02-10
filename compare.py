@@ -11,7 +11,7 @@ you have about two values.
 # ========
 
 class Expr(object):
-    """Encapsulates a python expression, primitive value or callable
+    """Wraps a python expression, primitive value or callable
     that is to be evaluated and compared to another value.
 
     Serves as the basic construct for describing an expectation.
@@ -54,13 +54,13 @@ value, callable or expression that you are interested in.
 
 When you apply expect to a value or expression, that value is stored as an 
 attribute on the `Expr` instance that is returned. For instance the example 
-below shows how the "actual" attribute is the evaluated expression::
+below shows how the "value" attribute is the evaluated expression::
 
     >>> expect(5 + 10).value == 15
     True
     
 If expect is applied to a callable, it does not evaluate immediately. Whether or 
-not the callable is evaluated depends on the mather that is applied. So as you 
+not the callable is evaluated depends on the matcher that is applied. So as you 
 can see from the example below, the callable is stored as-is::
 
     >>> def call_me():
@@ -68,10 +68,10 @@ can see from the example below, the callable is stored as-is::
     >>> expect(call_me).value      # doctest: +ELLIPSIS
     <function call_me at 0x...>
 
-However, if the function is called and passed into expect, the actual value stored 
+However, if the function is called and passed into expect, the wrapped value stored 
 is of course the return value of the callable::
 
-    >>> expect(call_me).value == "I was called..."
+    >>> expect(call_me()).value == "I was called..."
     True
 """
 
@@ -81,7 +81,7 @@ def matcher(func):
     the "expect" starter.
     
     The matcher being registered is expected to accept at least a single parameter
-    "self", which is the Expr object it is attached to.
+    `self`, which is the Expr object it is attached to.
     
     Here is a trivial example showing how to create and register a matcher::
     
@@ -93,15 +93,15 @@ def matcher(func):
     
         >>> expect("foo").to_equal_foo()
     
-    Typically, a matcher would also accept a second parameter "expected", 
-    which is the python expression, primitive or callable that the actual 
+    Typically, a matcher would also accept a second parameter `other`, 
+    which is the python expression, primitive or callable that the wrapped 
     value would be compared to.
     
     Another trivial matcher example. This time it takes a value to compare with
     and it spits out a helpful message if the comparison fails::
     
-        >>> def to_equal(self, expected):
-        ...     assert self.value == expected, "Expected '%s' to equal '%s'" % (self.value, expected)
+        >>> def to_equal(self, other):
+        ...     assert self.value == other, "Expected '%s' to equal '%s'" % (self.value, other)
         >>> matcher(to_equal)
         
     You may now use the matcher in an expectation::
@@ -139,10 +139,10 @@ def ensure(expr, outcome, message=""):
     
     Raises an error with the given message if the comparison fails::
     
-        >>> actual = 'Foo'
-        >>> expected = 'foo'
-        >>> message = "'%s' does not equal '%s'" % (actual, expected)
-        >>> ensure(actual == expected, True, message)
+        >>> A = 'Foo'
+        >>> B = 'foo'
+        >>> message = "'%s' does not equal '%s'" % (A, B)
+        >>> ensure(A == B, True, message)
         Traceback (most recent call last):
             ...
         UnmetExpectation: 'Foo' does not equal 'foo'
@@ -155,8 +155,8 @@ def ensure(expr, outcome, message=""):
 # =============
 
 @matcher
-def to_equal(self, expected):
-    """Compares values based on simple equality "=="
+def to_equal(self, other):
+    """Compares wrapped `value` to `other` based on simple equality "=="
     
     Passes if the values are equal::
     
@@ -169,12 +169,12 @@ def to_equal(self, expected):
             ...
         UnmetExpectation: Expected 'waiting...' to equal 'done!'
     """
-    message = "Expected %r to equal %r" % (self.value, expected)
-    ensure(self.value == expected, True, message)
+    message = "Expected %r to equal %r" % (self.value, other)
+    ensure(self.value == other, True, message)
 
 @matcher
-def to_be(self, expected):
-    """Compares values based on identity ("is")
+def to_be(self, other):
+    """Compares wrapped `value` to `other` based on identity ("is")
     
     Passes if the values are identical::
     
@@ -189,12 +189,12 @@ def to_be(self, expected):
             ...
         UnmetExpectation: Expected ['foo', 'bar'] to be ['foo', 'bar']
     """
-    message = "Expected %r to be %r" % (self.value, expected)
-    ensure(self.value is expected, True, message)
+    message = "Expected %r to be %r" % (self.value, other)
+    ensure(self.value is other, True, message)
 
 @matcher
 def to_be_none(self):
-    """Checks that the given value is None.
+    """Checks that the wrapped `value` is None.
     
     Passes if the given value is None::
     
@@ -306,17 +306,17 @@ def to_be_falsy(self):
     ensure(not bool(self.value), True, message)
 
 @matcher
-def to_contain(self, expected):
-    """Checks if the actual value contains the expected value.
+def to_contain(self, other):
+    """Checks if the wrapped `value` contains the other value.
     
     It applies to lists, strings, dict keys
     
-    Passes if the expected value is in the actual value::
+    Passes if the other value is in the wrapped value::
     
         >>> fruits = ['apple', 'orange', 'pear']
         >>> expect(fruits).to_contain('apple')
     
-    Fails if the expected value cannot be found in the actual value::
+    Fails if the other value cannot be found in the wrapped value::
     
         >>> mammals = ['dog', 'whale', 'cat']
         >>> expect(mammals).to_contain('fly')
@@ -334,12 +334,12 @@ def to_contain(self, expected):
         >>> pos = {'x': 40, 'y': 500}
         >>> expect(pos).to_contain('x')
     """
-    message = "Expected %r to contain %r" % (self.value, expected)
-    ensure(expected in self.value, True, message)
+    message = "Expected %r to contain %r" % (self.value, other)
+    ensure(other in self.value, True, message)
     
 @matcher
 def to_return(self, expected):
-    """Compares the return value of a callable to the expected value
+    """Compares the return value of the wrapped callable to the expected value
     
     Passes if the callable returns the expected value::
     
