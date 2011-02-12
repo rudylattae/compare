@@ -1,7 +1,7 @@
 import os
 from setuptools import setup
 
-version = '0.2dev'
+version = '0.2b'
 long_description = '\n\n'.join([
     open('README.rst').read(),
     open('CHANGES.txt').read(),
