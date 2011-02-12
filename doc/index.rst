@@ -14,9 +14,9 @@ Compare : alternative syntax for your Python asserts
 
 ::
 
-    expect(self.assertEqual).NOT.to_exist()
+    expect(`your expectations`).to_be_met()
 
-Not really, but you get the idea...
+You get the idea...
 
 
 Updates

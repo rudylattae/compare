@@ -19,6 +19,12 @@ you to compare values with readable and extensible syntax. It was designed
 to be a stand-alone alternative assertion syntax. As such you may use it 
 as-is with your favorite testing/specification framework.
 
+**Documentation**: http://packages.python.org/compare
+
+**Project source**: https://github.com/rudylattae/compare
+
+**PyPI page**: http://pypi.python.org/pypi/compare
+
 
 Features
 --------
@@ -93,6 +99,19 @@ tools. Here is an example of such an error::
     Traceback (most recent call last):
         ...
     UnmetExpectation: Expected ['foo', 'bar', 'baz'] to contain 'BAT'
+
+
+What's missing
+--------------
+
+The `expect` syntax does not yet have a clean way to negate a matcher. This feature is 
+planned for the next release. An example of the anticipated usage::
+
+    expect(['a', 'c', 'd']).NOT.to_contain('b')
+
+The `to_return` matcher does not accept any parameters to pass to the callable.
+
+Matchers do not accept custom fail messages.
 
 
 Feedback
