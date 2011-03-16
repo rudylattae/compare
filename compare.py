@@ -35,8 +35,10 @@ class Expr(object):
         >>> Expr(4 == 7).value == False
         True
     """
-    def __init__(self, expr):
+    def __init__(self, expr, *args, **kwargs):
         self.value = expr
+        self.args = args
+        self.kwargs = kwargs
 
 class UnmetExpectation(AssertionError):
     """Error that is raised if an expectation is not met.
@@ -439,8 +441,25 @@ def to_return(context, expected):
         Traceback (most recent call last):
             ...
         UnmetExpectation: Expected callable to return 'Bar' but got 'Barf'
+    
+    If you provide parameters while wrapping the callable, they will be used::
+    
+        >>> def hello(who):
+        ...     return "Hello " + who
+        >>> expect(hello, "Fuzz ball").to_return('Hello Fuzzy')
+        Traceback (most recent call last):
+            ...
+        UnmetExpectation: Expected callable to return 'Hello Fuzzy' but got 'Hello Fuzz ball'
+        
+    And of course keyword args (kwargs) are also supported::
+    
+        >>> def baz(a, b="change", c="me"):
+        ...     return "Baz %s %s %s" % (a, b, c)
+        >>> expect(baz, "please").to_return('Baz please change me')
+        >>> expect(baz, "params", b="got", c="changed!").to_return('Baz params got changed!')
+
     """
-    actual = context.value()
+    actual = context.value(*context.args, **context.kwargs)
     message = "Expected callable to return %r but got %r" % (expected, actual)
     ensure(actual == expected, True, message)
 
@@ -496,7 +515,7 @@ def to_raise(context, exception_class=None, exception_message=None):
     actual_exception = None
     
     try:
-        context.value()
+        context.value(*context.args, **context.kwargs)
     except Exception as e:
         actual_exception = e
         raised = True
