@@ -75,18 +75,18 @@ is of course the return value of the callable::
     True
 """
 
-def matcher(func):
-    """Decorator to register a function as a matcher. It attaches the
-    decorated function to the Expr class so that it is available through
+def matcher(obj):
+    """Registers a callable object (function or callable class) as a matcher. 
+    It attaches the specified callable to the Expr class so that it is available through
     the "expect" starter.
     
-    The matcher being registered is expected to accept at least a single parameter
-    `self`, which is the Expr object it is attached to.
+    *obj* is the matcher being registered. It is expected to accept at least one parameter
+    `context`, which is an instance of the the Expr class it is attached to.
     
     Here is a trivial example showing how to create and register a matcher::
     
-        >>> def to_equal_foo(self):
-        ...     assert self.value == "foo"
+        >>> def to_equal_foo(context):
+        ...     assert context.value == "foo"
         >>> matcher(to_equal_foo)
     
     Now you may use the matcher with the expect syntax::
@@ -100,8 +100,8 @@ def matcher(func):
     Another trivial matcher example. This time it takes a value to compare with
     and it spits out a helpful message if the comparison fails::
     
-        >>> def to_equal(self, other):
-        ...     assert self.value == other, "Expected '%s' to equal '%s'" % (self.value, other)
+        >>> def to_equal(context, other):
+        ...     assert context.value == other, "Expected '%s' to equal '%s'" % (context.value, other)
         >>> matcher(to_equal)
         
     You may now use the matcher in an expectation::
@@ -115,7 +115,7 @@ def matcher(func):
             ...
         AssertionError: Expected 'foo' to equal 'BAR'
     """
-    setattr(expect, func.__name__, func)
+    setattr(expect, obj.__name__, obj)
 
 def ensure(expr, outcome, message=""):
     """Compares the result of the given boolean expression to the anticipated
@@ -155,7 +155,7 @@ def ensure(expr, outcome, message=""):
 # =============
 
 @matcher
-def to_equal(self, other):
+def to_equal(context, other):
     """Checks if `value == other` -- simple equality.
     
     Passes if the values are equal::
@@ -169,11 +169,11 @@ def to_equal(self, other):
             ...
         UnmetExpectation: Expected 'waiting...' to equal 'done!'
     """
-    message = "Expected %r to equal %r" % (self.value, other)
-    ensure(self.value == other, True, message)
+    message = "Expected %r to equal %r" % (context.value, other)
+    ensure(context.value == other, True, message)
 
 @matcher
-def to_be(self, other):
+def to_be(context, other):
     """Checks if `value is other` -- identity, id().
     
     Passes if the values are identical::
@@ -189,11 +189,11 @@ def to_be(self, other):
             ...
         UnmetExpectation: Expected ['foo', 'bar'] to be ['foo', 'bar']
     """
-    message = "Expected %r to be %r" % (self.value, other)
-    ensure(self.value is other, True, message)
+    message = "Expected %r to be %r" % (context.value, other)
+    ensure(context.value is other, True, message)
 
 @matcher
-def to_be_less_than(self, other):
+def to_be_less_than(context, other):
     """Checks if `value < other`.
     
     Passes if the wrapped `value` is less than `other`::
@@ -212,11 +212,11 @@ def to_be_less_than(self, other):
             ...
         UnmetExpectation: Expected 9 to be less than 9
     """
-    message = "Expected %r to be less than %r" % (self.value, other)
-    ensure(self.value < other, True, message)
+    message = "Expected %r to be less than %r" % (context.value, other)
+    ensure(context.value < other, True, message)
     
 @matcher
-def to_be_less_than_or_equal_to(self, other):
+def to_be_less_than_or_equal_to(context, other):
     """Checks if `value <= other`.
     
     Passes if the wrapped `value` is less than or equal to `other`::
@@ -231,11 +231,11 @@ def to_be_less_than_or_equal_to(self, other):
             ...
         UnmetExpectation: Expected 9 to be less than or equal to 5
     """
-    message = "Expected %r to be less than or equal to %r" % (self.value, other)
-    ensure(self.value <= other, True, message)
+    message = "Expected %r to be less than or equal to %r" % (context.value, other)
+    ensure(context.value <= other, True, message)
     
 @matcher
-def to_be_greater_than(self, other):
+def to_be_greater_than(context, other):
     """Checks if `value > other`.
     
     Passes if the wrapped `value` is greater than `other`::
@@ -254,11 +254,11 @@ def to_be_greater_than(self, other):
             ...
         UnmetExpectation: Expected 20 to be greater than 20
     """
-    message = "Expected %r to be greater than %r" % (self.value, other)
-    ensure(self.value > other, True, message)
+    message = "Expected %r to be greater than %r" % (context.value, other)
+    ensure(context.value > other, True, message)
     
 @matcher
-def to_be_greater_than_or_equal_to(self, other):
+def to_be_greater_than_or_equal_to(context, other):
     """Checks if `value >= other`.
     
     Passes if the wrapped `value` is greater than or equal to `other`::
@@ -273,11 +273,11 @@ def to_be_greater_than_or_equal_to(self, other):
             ...
         UnmetExpectation: Expected 20 to be greater than or equal to 30
     """
-    message = "Expected %r to be greater than or equal to %r" % (self.value, other)
-    ensure(self.value >= other, True, message)
+    message = "Expected %r to be greater than or equal to %r" % (context.value, other)
+    ensure(context.value >= other, True, message)
 
 @matcher
-def to_be_none(self):
+def to_be_none(context):
     """Checks that the wrapped `value` is None.
     
     Passes if the given value is None::
@@ -293,11 +293,11 @@ def to_be_none(self):
             ...
         UnmetExpectation: Expected 'This is not None' to be None
     """
-    message = "Expected %r to be None" % self.value
-    ensure(self.value is None, True, message)
+    message = "Expected %r to be None" % context.value
+    ensure(context.value is None, True, message)
 
 @matcher
-def to_be_truthy(self):
+def to_be_truthy(context):
     """Evaluates the Python "truthiness" -- `bool()` of a given expression.
     See :meth:`to_be_falsy` for inverse matcher.
     
@@ -348,11 +348,11 @@ def to_be_truthy(self):
             ...
         UnmetExpectation: Expected None to be truthy
     """
-    message = "Expected %r to be truthy" % self.value
-    ensure(bool(self.value), True, message)
+    message = "Expected %r to be truthy" % context.value
+    ensure(bool(context.value), True, message)
 
 @matcher
-def to_be_falsy(self):
+def to_be_falsy(context):
     """Evaluates the Python "falsyness" -- `not bool()` of a given expression.
     See :meth:`to_be_truthy` for inverse matcher and details on Python truth tests.
     
@@ -386,11 +386,11 @@ def to_be_falsy(self):
             ...
         UnmetExpectation: Expected True to be falsy
     """
-    message = "Expected %r to be falsy" % self.value
-    ensure(not bool(self.value), True, message)
+    message = "Expected %r to be falsy" % context.value
+    ensure(not bool(context.value), True, message)
 
 @matcher
-def to_contain(self, other):
+def to_contain(context, other):
     """Checks if the wrapped `value` contains the other value.
     
     It applies to lists, strings, dict keys
@@ -418,11 +418,11 @@ def to_contain(self, other):
         >>> pos = {'x': 40, 'y': 500}
         >>> expect(pos).to_contain('x')
     """
-    message = "Expected %r to contain %r" % (self.value, other)
-    ensure(other in self.value, True, message)
+    message = "Expected %r to contain %r" % (context.value, other)
+    ensure(other in context.value, True, message)
     
 @matcher
-def to_return(self, expected):
+def to_return(context, expected):
     """Compares the return value of the wrapped callable to the expected value
     
     Passes if the callable returns the expected value::
@@ -440,12 +440,12 @@ def to_return(self, expected):
             ...
         UnmetExpectation: Expected callable to return 'Bar' but got 'Barf'
     """
-    actual = self.value()
+    actual = context.value()
     message = "Expected callable to return %r but got %r" % (expected, actual)
     ensure(actual == expected, True, message)
 
 @matcher
-def to_raise(self, exception_class=None, exception_message=None):
+def to_raise(context, exception_class=None, exception_message=None):
     """Invokes the provided callable and ensures that it raises an Exception.
     
     Passes if the callable raises an exeption (any exception)::
@@ -496,7 +496,7 @@ def to_raise(self, exception_class=None, exception_message=None):
     actual_exception = None
     
     try:
-        self.value()
+        context.value()
     except Exception as e:
         actual_exception = e
         raised = True
@@ -518,7 +518,7 @@ def to_raise(self, exception_class=None, exception_message=None):
 # methods to provide alternatives to some of the more verbose the base matchers.
 
 @matcher
-def __eq__(self, other):
+def __eq__(context, other):
     """Checks if `value == other`. It is an alternative to the to_equal base matcher.
     For instance, this example::
     
@@ -535,10 +535,10 @@ def __eq__(self, other):
             ...
         UnmetExpectation: Expected 'waiting...' to equal 'done!'
     """
-    self.to_equal(other)
+    context.to_equal(other)
 
 @matcher
-def __lt__(self, other):
+def __lt__(context, other):
     """Checks if `value < other`. It is an alternative to the to_be_less_than base matcher.
     For instance, this example::
     
@@ -555,10 +555,10 @@ def __lt__(self, other):
             ...
         UnmetExpectation: Expected 350 to be less than 200
     """
-    self.to_be_less_than(other)
+    context.to_be_less_than(other)
 
 @matcher
-def __le__(self, other):
+def __le__(context, other):
     """Checks if `value <= other`. It is an alternative to the 
     to_be_less_than_or_equal_to base matcher. For instance, this example::
     
@@ -575,10 +575,10 @@ def __le__(self, other):
             ...
         UnmetExpectation: Expected 201 to be less than or equal to 200
     """
-    self.to_be_less_than_or_equal_to(other)
+    context.to_be_less_than_or_equal_to(other)
 
 @matcher
-def __gt__(self, other):
+def __gt__(context, other):
     """Checks if `value > other`. It is an alternative to the to_be_greater_than base matcher.
     For instance, this example::
     
@@ -595,10 +595,10 @@ def __gt__(self, other):
             ...
         UnmetExpectation: Expected 150 to be greater than 200
     """
-    self.to_be_greater_than(other)
+    context.to_be_greater_than(other)
 
 @matcher
-def __ge__(self, other):
+def __ge__(context, other):
     """Checks if `value >= other`. It is an alternative to the 
     to_be_greater_than_or_equal_to base matcher. For instance, this example::
     
@@ -615,4 +615,4 @@ def __ge__(self, other):
             ...
         UnmetExpectation: Expected 199 to be greater than or equal to 200
     """
-    self.to_be_greater_than_or_equal_to(other)
+    context.to_be_greater_than_or_equal_to(other)
