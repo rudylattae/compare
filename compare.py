@@ -157,8 +157,11 @@ def ensure(expr, outcome, message=""):
 # =============
 
 @matcher
-def to_equal(context, other):
+def to_equal(context, other, hint=None, message=None):
     """Checks if `value == other` -- simple equality.
+    
+    - *hint* may be optionally supplied to be used as an identifier in the failure message.
+    - *message* may be provided to replace the stock failure message with your very own choice words.
     
     Passes if the values are equal::
     
@@ -170,8 +173,28 @@ def to_equal(context, other):
         Traceback (most recent call last):
             ...
         UnmetExpectation: Expected 'waiting...' to equal 'done!'
+        
+    The clarity of the failure message may be improved with a *hint*::
+    
+        >>> status = 'waiting...'
+        >>> expect(status).to_equal('done!', 'status')
+        Traceback (most recent call last):
+            ...
+        UnmetExpectation: Expected status to equal 'done!'. Got 'waiting...'
+    
+    Sometimes you may find it necessary to completely override the failure message::
+    
+        >>> status = 'waiting...'
+        >>> expect(status).to_equal('done!', message='OMGWTFBBQ!?! Should be done by now.')
+        Traceback (most recent call last):
+            ...
+        UnmetExpectation: OMGWTFBBQ!?! Should be done by now.
     """
-    message = "Expected %r to equal %r" % (context.value, other)
+    if not message:
+        if hint:
+            message = "Expected %s to equal %r. Got %r" % (hint, other, context.value)
+        else:
+            message = "Expected %r to equal %r" % (context.value, other)
     ensure(context.value == other, True, message)
 
 @matcher
