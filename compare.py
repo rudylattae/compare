@@ -157,7 +157,7 @@ def ensure(expr, outcome, message=""):
 # =============
 
 @matcher
-def to_equal(context, other, hint=None, message=None):
+def to_equal(context, other, hint=None, fail_message=None):
     """Checks if `value == other` -- simple equality.
     
     - *hint* may be optionally supplied to be used as an identifier in the failure message.
@@ -180,25 +180,26 @@ def to_equal(context, other, hint=None, message=None):
         >>> expect(status).to_equal('done!', 'status')
         Traceback (most recent call last):
             ...
-        UnmetExpectation: Expected status to equal 'done!'. Got 'waiting...'
+        UnmetExpectation: Expected status to equal 'done!' but got 'waiting...'
     
     Sometimes you may find it necessary to completely override the failure message::
     
         >>> status = 'waiting...'
-        >>> expect(status).to_equal('done!', message='OMGWTFBBQ!?! Should be done by now.')
+        >>> expect(status).to_equal('done!', fail_message='OMGWTFBBQ!?! Should be done by now.')
         Traceback (most recent call last):
             ...
         UnmetExpectation: OMGWTFBBQ!?! Should be done by now.
     """
-    if not message:
+    if not fail_message:
         if hint:
-            message = "Expected %s to equal %r. Got %r" % (hint, other, context.value)
+            fail_message = "Expected %(hint)s to equal %(expected)r but got %(actual)r"
         else:
-            message = "Expected %r to equal %r" % (context.value, other)
+            fail_message = "Expected %(actual)r to equal %(expected)r"
+    message = fail_message % {'actual':context.value, 'expected':other, 'hint': hint}
     ensure(context.value == other, True, message)
 
 @matcher
-def to_be(context, other):
+def to_be(context, other, hint=None, fail_message=None):
     """Checks if `value is other` -- identity, id().
     
     Passes if the values are identical::
@@ -214,11 +215,16 @@ def to_be(context, other):
             ...
         UnmetExpectation: Expected ['foo', 'bar'] to be ['foo', 'bar']
     """
-    message = "Expected %r to be %r" % (context.value, other)
+    if not fail_message:
+        if hint:
+            fail_message = "Expected %(hint)s to be %(expected)r but got %(actual)r"
+        else:
+            fail_message = "Expected %(actual)r to be %(expected)r"
+    message = fail_message % {'actual':context.value, 'expected':other, 'hint': hint}
     ensure(context.value is other, True, message)
 
 @matcher
-def to_be_less_than(context, other):
+def to_be_less_than(context, other, hint=None, fail_message=None):
     """Checks if `value < other`.
     
     Passes if the wrapped `value` is less than `other`::
@@ -237,11 +243,16 @@ def to_be_less_than(context, other):
             ...
         UnmetExpectation: Expected 9 to be less than 9
     """
-    message = "Expected %r to be less than %r" % (context.value, other)
+    if not fail_message:
+        if hint:
+            fail_message = "Expected %(hint)s to be less than %(expected)r but got %(actual)r"
+        else:
+            fail_message = "Expected %(actual)r to be less than %(expected)r"
+    message = fail_message % {'actual':context.value, 'expected':other, 'hint': hint}
     ensure(context.value < other, True, message)
     
 @matcher
-def to_be_less_than_or_equal_to(context, other):
+def to_be_less_than_or_equal_to(context, other, hint=None, fail_message=None):
     """Checks if `value <= other`.
     
     Passes if the wrapped `value` is less than or equal to `other`::
@@ -256,11 +267,16 @@ def to_be_less_than_or_equal_to(context, other):
             ...
         UnmetExpectation: Expected 9 to be less than or equal to 5
     """
-    message = "Expected %r to be less than or equal to %r" % (context.value, other)
+    if not fail_message:
+        if hint:
+            fail_message = "Expected %(hint)s to be less than or equal to %(expected)r but got %(actual)r"
+        else:
+            fail_message = "Expected %(actual)r to be less than or equal to %(expected)r"
+    message = fail_message % {'actual':context.value, 'expected':other, 'hint': hint}
     ensure(context.value <= other, True, message)
     
 @matcher
-def to_be_greater_than(context, other):
+def to_be_greater_than(context, other, hint=None, fail_message=None):
     """Checks if `value > other`.
     
     Passes if the wrapped `value` is greater than `other`::
@@ -279,11 +295,16 @@ def to_be_greater_than(context, other):
             ...
         UnmetExpectation: Expected 20 to be greater than 20
     """
-    message = "Expected %r to be greater than %r" % (context.value, other)
+    if not fail_message:
+        if hint:
+            fail_message = "Expected %(hint)s to be greater than %(expected)r but got %(actual)r"
+        else:
+            fail_message = "Expected %(actual)r to be greater than %(expected)r"
+    message = fail_message % {'actual':context.value, 'expected':other, 'hint': hint}
     ensure(context.value > other, True, message)
     
 @matcher
-def to_be_greater_than_or_equal_to(context, other):
+def to_be_greater_than_or_equal_to(context, other, hint=None, fail_message=None):
     """Checks if `value >= other`.
     
     Passes if the wrapped `value` is greater than or equal to `other`::
@@ -298,11 +319,16 @@ def to_be_greater_than_or_equal_to(context, other):
             ...
         UnmetExpectation: Expected 20 to be greater than or equal to 30
     """
-    message = "Expected %r to be greater than or equal to %r" % (context.value, other)
+    if not fail_message:
+        if hint:
+            fail_message = "Expected %(hint)s to be greater than or equal to %(expected)r but got %(actual)r"
+        else:
+            fail_message = "Expected %(actual)r to be greater than or equal to %(expected)r"
+    message = fail_message % {'actual':context.value, 'expected':other, 'hint': hint}
     ensure(context.value >= other, True, message)
 
 @matcher
-def to_be_none(context):
+def to_be_none(context, hint=None, fail_message=None):
     """Checks that the wrapped `value` is None.
     
     Passes if the given value is None::
@@ -318,11 +344,16 @@ def to_be_none(context):
             ...
         UnmetExpectation: Expected 'This is not None' to be None
     """
-    message = "Expected %r to be None" % context.value
+    if not fail_message:
+        if hint:
+            fail_message = "Expected %(hint)s to be None but got %(actual)r"
+        else:
+            fail_message = "Expected %(actual)r to be None"
+    message = fail_message % {'actual':context.value, 'hint': hint}
     ensure(context.value is None, True, message)
 
 @matcher
-def to_be_truthy(context):
+def to_be_truthy(context, hint=None, fail_message=None):
     """Evaluates the Python "truthiness" -- `bool()` of a given expression.
     See :meth:`to_be_falsy` for inverse matcher.
     
@@ -373,11 +404,16 @@ def to_be_truthy(context):
             ...
         UnmetExpectation: Expected None to be truthy
     """
-    message = "Expected %r to be truthy" % context.value
+    if not fail_message:
+        if hint:
+            fail_message = "Expected %(hint)s to be truthy but got %(actual)r"
+        else:
+            fail_message = "Expected %(actual)r to be truthy"
+    message = fail_message % {'actual':context.value, 'hint': hint}
     ensure(bool(context.value), True, message)
 
 @matcher
-def to_be_falsy(context):
+def to_be_falsy(context, hint=None, fail_message=None):
     """Evaluates the Python "falsyness" -- `not bool()` of a given expression.
     See :meth:`to_be_truthy` for inverse matcher and details on Python truth tests.
     
@@ -411,11 +447,16 @@ def to_be_falsy(context):
             ...
         UnmetExpectation: Expected True to be falsy
     """
-    message = "Expected %r to be falsy" % context.value
+    if not fail_message:
+        if hint:
+            fail_message = "Expected %(hint)s to be falsy but got %(actual)r"
+        else:
+            fail_message = "Expected %(actual)r to be falsy"
+    message = fail_message % {'actual':context.value, 'hint': hint}
     ensure(not bool(context.value), True, message)
 
 @matcher
-def to_contain(context, other):
+def to_contain(context, other, hint=None, fail_message=None):
     """Checks if the wrapped `value` contains the other value.
     
     It applies to lists, strings, dict keys
@@ -443,7 +484,12 @@ def to_contain(context, other):
         >>> pos = {'x': 40, 'y': 500}
         >>> expect(pos).to_contain('x')
     """
-    message = "Expected %r to contain %r" % (context.value, other)
+    if not fail_message:
+        if hint:
+            fail_message = "Expected %(hint)s to contain %(expected)r but got %(actual)r"
+        else:
+            fail_message = "Expected %(actual)r to contain %(expected)r"
+    message = fail_message % {'actual':context.value, 'expected':other, 'hint': hint}
     ensure(other in context.value, True, message)
     
 @matcher
