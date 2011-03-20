@@ -241,12 +241,12 @@ def to_equal(context, other, hint=None, fail_message=None):
         UnmetExpectation: Expected status not to equal 'waiting...' but got 'waiting...'
         
     """
-    negate = "" if context._determinant else "not "
     if not fail_message:
         if hint:
             fail_message = "Expected %(hint)s %(negate)sto equal %(expected)r but got %(actual)r"
         else:
             fail_message = "Expected %(actual)r %(negate)sto equal %(expected)r"
+    negate = "" if context._determinant else "not "
     message = fail_message % {'actual':context.value, 'expected':other, 'hint': hint, 'negate': negate}
     ensure(context.value == other, context._determinant, message)
 
@@ -266,14 +266,28 @@ def to_be(context, other, hint=None, fail_message=None):
         Traceback (most recent call last):
             ...
         UnmetExpectation: Expected ['foo', 'bar'] to be ['foo', 'bar']
+        
+    Supports negation via the `NOT` operator::
+        
+        >>> expect(a1).NOT.to_be(b1)
+        >>> expect(a1).NOT.to_be(a2)
+        Traceback (most recent call last):
+            ...
+        UnmetExpectation: Expected ['foo', 'bar'] not to be ['foo', 'bar']
+        
+        >>> expect(a1).NOT.to_be(a2, hint='a1')
+        Traceback (most recent call last):
+            ...
+        UnmetExpectation: Expected a1 not to be ['foo', 'bar'] but got ['foo', 'bar']
     """
     if not fail_message:
         if hint:
-            fail_message = "Expected %(hint)s to be %(expected)r but got %(actual)r"
+            fail_message = "Expected %(hint)s %(negate)sto be %(expected)r but got %(actual)r"
         else:
-            fail_message = "Expected %(actual)r to be %(expected)r"
-    message = fail_message % {'actual':context.value, 'expected':other, 'hint': hint}
-    ensure(context.value is other, True, message)
+            fail_message = "Expected %(actual)r %(negate)sto be %(expected)r"
+    negate = "" if context._determinant else "not "
+    message = fail_message % {'actual':context.value, 'expected':other, 'hint': hint, 'negate': negate}
+    ensure(context.value is other, context._determinant, message)
 
 @matcher
 def to_be_less_than(context, other, hint=None, fail_message=None):
