@@ -36,10 +36,46 @@ class Expr(object):
         True
     """
     def __init__(self, expr, *args, **kwargs):
+        self._determinant = True
         self.value = expr
         self.args = args
         self.kwargs = kwargs
 
+    @property
+    def NOT(self):
+        """Negates the determinant for and returns a reference to 
+        the current expectation instance to enable chaining.
+        
+        Behind the scenes, the NOT operator sets an internal flag, 
+        the determinant. This is the flag that all matchers must 
+        validate against. If the determinant is True (default), 
+        then the wrapped expression is expected to evaluate to True, 
+        and vice-versa.
+        
+        The following is a simple example to illustrate how this 
+        operator affects the internals of the current expectation::
+            
+            >>> sound = 'Woosh'
+            >>> x = Expr(sound)
+            
+            Default value of the determinant
+            >>> x._determinant
+            True
+            
+            NOT returns a reference to the current Expr instance
+            >>> x.NOT.value == 'Woosh'
+            True
+            
+            and it negates the determinant
+            >>> x._determinant
+            False
+        
+        For more information on the `NOT` operator, please refer to
+        the documenation of the base matchers.
+        """
+        self._determinant = False
+        return self
+        
 class UnmetExpectation(AssertionError):
     """Error that is raised if an expectation is not met.
     
@@ -47,6 +83,7 @@ class UnmetExpectation(AssertionError):
     unittest assertion errors and plain old python "assert" errors.
     """
     pass
+
     
 # provide a usable alias for the Expr class
 expect = Expr
@@ -189,14 +226,29 @@ def to_equal(context, other, hint=None, fail_message=None):
         Traceback (most recent call last):
             ...
         UnmetExpectation: OMGWTFBBQ!?! Should be done by now.
+        
+    Supports negation via the `NOT` operator::
+        
+        >>> expect('waiting...').NOT.to_equal('done!')
+        >>> expect('waiting...').NOT.to_equal('waiting...')
+        Traceback (most recent call last):
+            ...
+        UnmetExpectation: Expected 'waiting...' not to equal 'waiting...'
+        
+        >>> expect('waiting...').NOT.to_equal('waiting...', hint='status')
+        Traceback (most recent call last):
+            ...
+        UnmetExpectation: Expected status not to equal 'waiting...' but got 'waiting...'
+        
     """
+    negate = "" if context._determinant else "not "
     if not fail_message:
         if hint:
-            fail_message = "Expected %(hint)s to equal %(expected)r but got %(actual)r"
+            fail_message = "Expected %(hint)s %(negate)sto equal %(expected)r but got %(actual)r"
         else:
-            fail_message = "Expected %(actual)r to equal %(expected)r"
-    message = fail_message % {'actual':context.value, 'expected':other, 'hint': hint}
-    ensure(context.value == other, True, message)
+            fail_message = "Expected %(actual)r %(negate)sto equal %(expected)r"
+    message = fail_message % {'actual':context.value, 'expected':other, 'hint': hint, 'negate': negate}
+    ensure(context.value == other, context._determinant, message)
 
 @matcher
 def to_be(context, other, hint=None, fail_message=None):

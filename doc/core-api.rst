@@ -29,6 +29,12 @@ The `Expr` class
 .. autoclass:: Expr
 
 
+The `NOT` operator
+==================
+
+.. autoattribute:: Expr.NOT
+
+
 Exceptions
 ==========
 
