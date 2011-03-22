@@ -35,15 +35,19 @@ User guide
 ==========
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    
-   usage
-   
+   usage/get-started
+   usage/managing-expectations
+   usage/not
+   usage/custom-matchers
+
+
 API reference
 =============
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
 
    core-api
    core-matchers

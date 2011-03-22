@@ -71,7 +71,7 @@ class Expr(object):
             False
         
         For more information on the `NOT` operator, please refer to
-        the documenation of the base matchers.
+        the :doc:`usage` documentation.
         """
         self._determinant = False
         return self
@@ -81,6 +81,9 @@ class UnmetExpectation(AssertionError):
     
     This error class inherits :py:exc:`AssertionError` so it is compatible with
     unittest assertion errors and plain old python "assert" errors.
+    
+    To learn how to get the most out of your unmet expectations, 
+    see :doc:`usage/managing-expectations`
     """
     pass
 
