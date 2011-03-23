@@ -25,8 +25,8 @@ see is something like::
 
     AssertionError: False is not True
 
-The primary focus of compare is to keep you in the 
-"specification by example" mindset. The general flow for creating an example 
+Since the primary focus of compare is to keep you in the 
+"specification by example" mindset, the general flow for creating an example 
 is that you:
 
 * define some **pre-conditions** for your target code
@@ -51,12 +51,7 @@ read more about it here :class:`compare.UnmetExpectation`.
 Why manage unmet expectations?
 ================================
 
-When practicing TDD/BDD/ATDD/Specification by example, you will notice 
-that the biggest win comes neither from "100% code coverage" 
-nor having a "green build". On the contrary, your automated unit or 
-acceptance tests are at their best when you have a broken build! 
-
-Why? The end-goal of writing "tests" before you write code is to build
+The goal of writing "tests" before you write code is to build
 a specification (a living documentation if you will) for the overall 
 feature-set and technical design of your code. 
 
@@ -79,3 +74,81 @@ Now let's look at ways to get the most out of unmet expectations.
 How to manage unmet expectations
 ==================================
 
+Hint at the focus of the expectation
+--------------------------------------
+
+The base compare matchers and by extension, all custom matchers should 
+aim to fail with enough contextual information to help an observer diagnose 
+and potentially resolve the issue.
+
+compare allows you to customize the output associated with unmet expectations. 
+You may provide a `hint` to the matcher::
+
+
+    # instead of this
+    expect(joe.is_cool()).to_be_true()
+    
+    "UnmetExpectation: Expected False to be True"
+    
+The above is a basic generice failure message. It is possible to provide the 
+matcher with a hint that better identifies the focus of the expectation.
+
+    # try this
+    expect(joe.is_cool()).to_be_true('joe.is_cool()')
+    
+    UnmetExpectation: Expected joe.is_cool() to be True but got False
+
+
+Customize the failure message
+-------------------------------
+
+In certain cases you may wish to display a very specific message regarding 
+the unmet expectation. To do this, provide a `fail_message` to the matcher::
+
+    # provide a custom failure message
+    expect(joe.is_cool()).to_be_true(fail_message='OMG! Joe is not cool.')
+    
+    UnmetExpectation: OMG! Joe is not cool.
+    
+
+Use appropriately named matchers
+----------------------------------
+
+Another way to manage unmet expectations, is to select a matcher that 
+focuses a reader's attention on the behaviour being verified. Compared to 
+the previous examples, you will notice that the matcher in the following 
+example is more in tuse with our concern for the spec::
+
+    # select an approprite matcher
+    expect(joe.is_cool).to_return(True)
+    
+    UnmetExpectation: Expected callable to return True but got False
+    
+    # of course, you may provide a hint for clarity
+    expect(joe.is_cool).to_return(True, 'joe.is_cool()')
+    
+    UnmetExpectation: Expected joe.is_cool() to return True but got False
+    
+
+Create custom matchers
+-------------------------
+
+One of the best ways to get the most for unmet expectations is to make sure that 
+the matcher is implmented (name and code-wise) to expresses the behaviour 
+you wish to describe. To this end compare makes it easy to create and (re)use 
+custom matchers that handle specialized verifications.
+
+Hopefully, the example below gives you a better idea of how a specialized matcher 
+could improve the readability of your specs and provide priceless value when 
+the spec fails::
+
+    # create a custom matcher
+    @matcher
+    def to_be_cool(context, hint=None, msg=None):
+        message = 'Expected %()s %(negate)s'
+        ensure(context.is_cool(), True, message)
+    
+    expect(joe).to_be_cool(hint='joe')
+        
+The custom matcher above For more information on how to create custom matchers, please see 
+:doc:`custom-matchers`.

@@ -62,9 +62,9 @@ easy to follow::
     >>> from compare import expect, matcher, ensure
     
     >>> @matcher
-    ... def to_be_citrus(self):
-    ...     ensure(self.value in ['Orange'], True, 
-    ...         "Expected %r to be a citrus fruit" % self.value)
+    ... def to_be_citrus(context):
+    ...     ensure(context.value in ['Orange'], True, 
+    ...         "Expected %r to be a citrus fruit" % context.value)
     
     >>> fruit = 'Orange'
     >>> expect(fruit).to_be_citrus()

@@ -107,7 +107,7 @@ What's missing
 The `expect` syntax does not yet have a clean way to negate a matcher. This feature is 
 planned for the next release. An example of the anticipated usage::
 
-    expect(['a', 'c', 'd']).NOT.to_contain('b')
+    >>> expect(['a', 'c', 'd']).NOT.to_contain('b')
 
 The `to_return` matcher does not accept any parameters to pass to the callable.
 
