@@ -1,6 +1,6 @@
-===========
-Get started
-===========
+=================
+Getting started
+=================
 
 To get started with compare, simply import the :func:`expect` function into 
 your module. You may then use the function to handle any comparisons 

@@ -37,7 +37,7 @@ User guide
 .. toctree::
    :maxdepth: 1
    
-   usage/get-started
+   usage/getting-started
    usage/managing-expectations
    usage/not
    usage/custom-matchers
