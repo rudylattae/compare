@@ -1,4 +1,3 @@
 -e .
-pep8 == 1.4.6
-checkit == 0.3.2b
-
+flake8==2.0
+checkit==0.3.2b
