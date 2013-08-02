@@ -147,8 +147,7 @@ def matcher(obj):
     and it spits out a helpful message if the comparison fails::
 
         >>> def to_equal(context, other):
-        ...     assert context.value == other,
-                    "Expected '%s' to equal '%s'" % (context.value, other)
+        ...     assert context.value == other, "Expected '%s' to equal '%s'" % (context.value, other)
         >>> matcher(to_equal)
 
     You may now use the matcher in an expectation::
@@ -651,7 +650,8 @@ def to_raise(context, exception_class=None, exception_message=None):
         >>> expect(raise_custom_exception).to_raise(CatastrophicError)
         Traceback (most recent call last):
             ...
-        UnmetExpectation: Expected callable to raise CatastrophicError() but got MildError()
+        UnmetExpectation: Expected callable to raise CatastrophicError() 
+          but got MildError()
 
     Further, you may specify the message you expect the exception to be raised with.
     The expectation will fail if the callable raises the right exception but with
@@ -659,11 +659,10 @@ def to_raise(context, exception_class=None, exception_message=None):
 
         >>> def raise_exception_with_message():
         ...     raise CatastrophicError('BOOM!')
-
-        >>> expect(raise_exception_with_message).to_raise(CatastrophicError, 'Ohly Crap...')
+        >>> expect(raise_exception_with_message).to_raise(CatastrophicError, 'Ohly Crap...',)
         Traceback (most recent call last):
             ...
-        UnmetExpectation: Expected callable to raise CatastrophicError('Ohly Crap...',)
+        UnmetExpectation: Expected callable to raise CatastrophicError('Ohly Crap...',) 
           but got CatastrophicError('BOOM!',)
     """
     raised = False
@@ -676,12 +675,10 @@ def to_raise(context, exception_class=None, exception_message=None):
         raised = True
 
     if exception_class and exception_message:
-        message = "Expected callable to raise %r \n  but got %r" % (
-            exception_class(exception_message), actual_exception)
-        ensure(raised and isinstance(actual_exception, exception_class)\
-               and actual_exception.message == exception_message, True, message)
+        message = "Expected callable to raise %r \n  but got %r" % (exception_class(exception_message), actual_exception)
+        ensure(raised and isinstance(actual_exception, exception_class) and actual_exception.message == exception_message, True, message)
     elif exception_class:
-        message = "Expected callable to raise %r but got %r" % (exception_class(), actual_exception)
+        message = "Expected callable to raise %r \n  but got %r" % (exception_class(), actual_exception)
         ensure(raised and isinstance(actual_exception, exception_class), True, message)
     else:
         message = "Expected callable to raise an exception"
