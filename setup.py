@@ -15,6 +15,7 @@ setup(
     author = "Austin Stromness",
     author_email = "stromnessdevelopment@gmail.com",
     url = 'https://github.com/astromness/compare',
+    download_url='https://github.com/astromness/compare/archive/refs/tags/1.0.0.tar.gz',
     license = "Simplified BSD",
     keywords = ['python', 'compare', 'matcher', 'to be', 'to equal', 'assert', 'test equality', 'specification', 'BDD', 'TDD'],
     classifiers = [
