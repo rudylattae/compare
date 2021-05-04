@@ -1,16 +1,21 @@
-from compare3 import expect, UnmetExpectation, expect_call
+from compare3 import UnmetExpectation, expect_call
+from compare3.Expression import Expression
 import logging
-from logging import Logger
+from custom_loggers import CustomLogger
 logging.basicConfig(level=logging.NOTSET)
 logging.root.setLevel(logging.NOTSET)
 
+CustomLogger.use_global_log_level_default=True
+CustomLogger.disabled=False
+CustomLogger.global_log_level=0
 
+class CustomExpression(Expression):
+    logger = CustomLogger("expressions")
+    comparison_log_level = "DEBUG"
+
+expect = CustomExpression
 
 if __name__ == '__main__':
-
-    expect.comparison_log_level=10
-    expect.logger=Logger("expressions")
-    expect.logger.setLevel(logging.NOTSET)
 
     # simple equals and contains
     expect("new value").equal_to("new value").and_.contains("val")
