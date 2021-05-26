@@ -16,20 +16,21 @@ class CustomExpression(Expression):
 expect = CustomExpression
 
 if __name__ == '__main__':
+    twenty=20
 
     # simple equals and contains
     expect("new value").equal_to("new value").and_.contains("val")
     # same thing but with not on first
     expect("new value").is_not_.equal_to("new value 1").and_.contains("val")
     try:
-        expect(20).equal_to("apples")
+        expect(twenty).equal_to("apples")
     except UnmetExpectation as ue:
-        expect(str(ue)).equal_to("'20' is not equal to 'apples'")
+        expect(str(ue)).equal_to("twenty: '20' is not equal to 'apples'")
 
     try:
-        expect(20).equal_to("apples")
+        expect(twenty).equal_to("apples")
     except AssertionError as ue:
-        expect(str(ue)).equal_to("'20' is not equal to 'apples'")
+        expect(str(ue)).equal_to("twenty: '20' is not equal to 'apples'")
 
     expect(20).is_.numeric().and_.equal_to_as_integer('20').and_.equal_to_as_integer(20).equal_to_as_strings(20)
     expect(20.01).is_.numeric().and_.equal_to_as_floating_point(20.01).and_.equal_to_as_floating_point('20.01').and_\
@@ -37,7 +38,7 @@ if __name__ == '__main__':
     try:
         expect(20).is_not_.numeric()
     except UnmetExpectation as ue:
-        expect(str(ue)).equal_to("20 seems numeric")
+        expect(str(ue)).equal_to("20 doesn't seem numeric")
     expect(0).falsy()
     expect(1).truthy()
     expect(-1).truthy()

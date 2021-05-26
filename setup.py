@@ -9,14 +9,14 @@ with open(str(readme)) as f:
 setup(
     name = "compare3",
     packages = ['compare3'],
-    version = "1.0.3",
+    version = "1.0.4",
     description = "Alternative syntax for comparing/asserting expressions in Python 3.",
     long_description = long_description,
     long_description_content_type = 'text/markdown',
     author = "Austin Stromness",
     author_email = "stromnessdevelopment@gmail.com",
     url = 'https://github.com/astromness/compare',
-    download_url='https://github.com/astromness/compare/archive/refs/tags/1.0.3.tar.gz',
+    download_url='https://github.com/astromness/compare/archive/refs/tags/1.0.4.tar.gz',
     license = "Simplified BSD",
     keywords = ['python', 'compare', 'matcher', 'to be', 'to equal', 'assert', 'test equality', 'specification', 'BDD', 'TDD'],
     classifiers = [
